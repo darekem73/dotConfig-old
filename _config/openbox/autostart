@@ -1,0 +1,6 @@
+nitrogen --restore &
+#compton &
+tint2 &
+nm-applet &
+~/widgets.sh &
+setxkbmap -option caps:escape &
