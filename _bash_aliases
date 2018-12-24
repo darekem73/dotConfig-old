@@ -1,0 +1,2 @@
+alias tt='tail -f `ls -t *.txt|head -1`'
+alias ti='tt | grep INFO'
