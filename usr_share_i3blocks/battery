@@ -1,0 +1,42 @@
+#!/bin/bash
+
+ACPI=`acpi -b | sed "1p"`
+STATUS=`echo $ACPI | cut -d, -f1 | cut -d: -f2`
+PERCENT=`echo $ACPI | cut -d, -f2 | sed "s/%//"`
+REMAINING=`echo $ACPI | cut -d, -f3 | egrep -o "[0-9]{2}:[0-9]{2}"`
+
+FULL_TEXT=$PERCENT"%"
+
+if [[ $STATUS -eq "Discharging" ]]; then
+    FULL_TEXT=$FULL_TEXT" DIS"
+elif [[ $STATUS -eq "Charging" ]]; then
+    FULL_TEXT=$FULL_TEXT" CHR"
+fi
+
+SHORT_TEXT=$FULL_TEXT
+if ! [[ -z "$REMAINING" ]]; then
+    FULL_TEXT=$FULL_TEXT" ("$REMAINING")"
+fi
+
+echo $FULL_TEXT
+echo $SHORT_TEXT
+
+# consider color and urgent flag only on discharge
+if [[ $STATUS -eq "Discharging" ]]; then 
+
+	if [[ $PERCENT -lt 20 ]]; then
+		echo "#FF0000"
+	elif [[ $PERCENT -lt 40 ]]; then
+		echo "#FFAE00"
+	elif [[ $PERCENT -lt 60 ]]; then
+		echo "#FFF600"
+	elif [[ $PERCENT -lt 85 ]]; then
+		echo "#A8FF00"
+	fi
+
+	if [[ $PERCENT -lt 6 ]]; then
+		exit 33
+	fi
+fi
+
+exit 0
