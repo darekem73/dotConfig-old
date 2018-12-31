@@ -1,8 +1,8 @@
 #!/bin/bash
 
-ACPI=`acpi -b | sed "1p"`
-STATUS=`echo $ACPI | cut -d, -f1 | cut -d: -f2 | sed "s/ //g"`
-PERCENT=`echo $ACPI | cut -d, -f2 | sed "s/%//"`
+ACPI=`acpi -b | sed -n "1p"`
+STATUS=`echo $ACPI | cut -d, -f1 | cut -d: -f2 | sed "s/^ *//"`
+PERCENT=`echo $ACPI | cut -d, -f2 | sed "s/^ *//;s/%//"`
 REMAINING=`echo $ACPI | cut -d, -f3 | egrep -o "[0-9]{2}:[0-9]{2}"`
 
 FULL_TEXT=$PERCENT"%"
@@ -11,6 +11,8 @@ if [[ "$STATUS" = "Discharging" ]]; then
     FULL_TEXT=$FULL_TEXT" DIS"
 elif [[ "$STATUS" = "Charging" ]]; then
     FULL_TEXT=$FULL_TEXT" CHR"
+else
+    FULL_TEXT=$FULL_TEXT" UNK"
 fi
 
 SHORT_TEXT=$FULL_TEXT
