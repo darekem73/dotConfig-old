@@ -1,0 +1,25 @@
+#!/bin/bash
+EXTERNAL_OUTPUT="HDMI1"
+INTERNAL_OUTPUT="eDP1"
+
+# if we don't have a file, start at zero
+if [ ! -f "/tmp/monitor_mode.dat" ] ; then
+  monitor_mode="INTERNAL"
+
+# otherwise read the value from the file
+else
+  monitor_mode=`cat /tmp/monitor_mode.dat`
+fi
+
+# toggle between extended and internal only
+if [ $monitor_mode = "EXTEND" ]; then
+        monitor_mode="INTERNAL"
+        xrandr --output $INTERNAL_OUTPUT --auto --output $EXTERNAL_OUTPUT --off
+elif [ $monitor_mode = "INTERNAL" ]; then
+        monitor_mode="EXTEND"
+	xrandr --output $INTERNAL_OUTPUT --auto --output $EXTERNAL_OUTPUT --auto --right-of $INTERNAL_OUTPUT
+fi
+
+# finally store the current mode
+echo "${monitor_mode}" > /tmp/monitor_mode.dat
+
