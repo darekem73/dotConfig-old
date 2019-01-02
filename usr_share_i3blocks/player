@@ -1,0 +1,7 @@
+#!/bin/bash
+
+case $BLOCK_BUTTON in
+  1) mpc -q toggle
+esac
+
+mpc -f "(%time%) %title% - %artist%" | awk 'NR==1&&($1!~/volume/) {T=$0}; NR==    2&&($1!~/volume/) {S=$1}; END {if (S!="") print S, T}'
