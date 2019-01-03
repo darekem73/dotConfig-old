@@ -12,8 +12,13 @@
 set $mod Mod4
 
 # restore background; execute conky
+# exec --no-startup-id pkill conky
 exec --no-startup-id nitrogen --restore
-exec --no-startup-id ~/widgets.sh
+exec --no-startup-id conky -d -c ~/.conkyrc-stat
+exec --no-startup-id nm-applet
+exec --no-startup-id blueman-applet
+exec --no-startup-id system-config-printer-applet
+exec --no-startup-id mopidy
 exec --no-startup-id setxkbmap -option caps:escape
 
 # setup multiple monitors
@@ -48,7 +53,7 @@ font pango:monospace 8
 floating_modifier $mod
 
 # start a terminal
-#bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Shift+Return exec i3-sensible-terminal
 bindsym $mod+Return exec tilix
 #bindsym $mod+Shift+Return exec xterm
 
@@ -168,7 +173,8 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 #bindsym $mod+Control+l exec --no-startup-id blurlock
-bindsym $mod+Shift+p exec --no-startup-id i3exit shutdown, mode "default"
+#bindsym $mod+Shift+p exec --no-startup-id i3exit shutdown, mode "default"
+bindsym $mod+Shift+p exec --no-startup-id i3exit logout, mode "default"
 
 # Set shut down, restart and locking features
 bindsym $mod+0 mode "$mode_system"
@@ -221,24 +227,26 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-	position bottom
+	position top
         status_command i3blocks
         #status_command i3status
         tray_output primary
 }
 
 # alsamixer
-bindsym $mod+m exec --no-startup-id xterm -title "alsamixer" -e alsamixer 
+bindsym $mod+m exec --no-startup-id xterm -title "alsamixer" -e alsamixer
+bindsym $mod+p exec --no-startup-id xterm -title "player" -e ncmpcpp
 
 # additional default window settings
 for_window [title="alsamixer"] floating enable move position center
+for_window [title="player"] floating enable move position mouse
 for_window [window_role="pop-up"] floating enable move position center
 for_window [instance="file_progress"] floating enable move position center
 
 # Volume controls
-bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 5%-
-bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+
-bindsym XF86AudioMute exec amixer -D pulse sset Master toggle
+bindsym XF86AudioLowerVolume exec amixer -D default sset Master 5%-
+bindsym XF86AudioRaiseVolume exec amixer -D default sset Master 5%+
+bindsym XF86AudioMute exec amixer -D default sset Master toggle
 
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 5 # increase screen brightness
@@ -252,7 +260,7 @@ bindsym XF86TouchpadToggle exec /usr/bin/toggletouchpad.sh # toggle touchpad
 # enable / disable second monitor
 bindsym $mod+Shift+s exec --no-startup-id /usr/bin/monitor
 
-# load 3-piece layout
+# manage layouts
 bindsym $mod+Ctrl+1 exec --no-startup-id i3-msg "append_layout ~/test-1.layout"
 bindsym $mod+Ctrl+2 exec --no-startup-id i3-msg "append_layout ~/test-2.layout"
 bindsym $mod+Ctrl+3 exec --no-startup-id i3-msg "append_layout ~/test-3.layout"
