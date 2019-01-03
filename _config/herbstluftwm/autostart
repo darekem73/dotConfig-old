@@ -12,6 +12,11 @@ hc emit_hook reload
 nitrogen --restore
 pkill conky
 conky -d -c .conkyrc-stat
+mopidy &
+nm-applet &
+system-config-printer-appler &
+blueman-applet &
+#compton &
 setxkbmap -option caps:escape
 
 # remove all existing keybindings
@@ -27,10 +32,12 @@ Mod=Mod4   # Use the super key as the main modifier
 hc keybind $Mod-Shift-p quit
 hc keybind $Mod-Shift-r reload
 hc keybind $Mod-Shift-q close
-hc keybind $Mod-Return spawn sakura # use your $TERMINAL with xterm as fallback
-hc keybind $Mod-Shift-Return spawn i3-sensible-terminal # use your $TERMINAL with xterm as fallback
+hc keybind $Mod-Return spawn tilix # use your $TERMINAL with xterm as fallback
+hc keybind $Mod-Shift-Return spawn terminator # use your $TERMINAL with xterm as fallback
 hc keybind $Mod-d spawn rofi -show run -font "Monospace 10" -fake-transparency
 hc keybind $Mod-Shift-d spawn rofi -show drun -font "Monospace 10" -fake-transparency
+hc keybind $Mod-m spawn xterm -title "alsamixer" -e alsamixer
+hc keybind $Mod-p spawn xterm -title "player" -e ncmpcpp
 
 # basic movement
 # focusing clients
@@ -88,6 +95,9 @@ done
 # cycle through tags
 hc keybind $Mod-period use_index +1 --skip-visible
 hc keybind $Mod-comma  use_index -1 --skip-visible
+hc keybind $Mod-Control-Left  use_index -1 --skip-visible
+hc keybind $Mod-Control-Right  use_index +1 --skip-visible
+
 
 # Sreen brightness controls
 hc keybind XF86MonBrightnessUp spawn xbacklight -inc 5 # increase screen brightness
@@ -98,9 +108,9 @@ hc keybind XF86TouchpadToggle spawn /usr/bin/toggletouchpad.sh # toggle touchpad
 
 # layouting
 hc keybind $Mod-r remove
-hc keybind $Mod-s floating toggle
+# hc keybind $Mod-s floating toggle
 hc keybind $Mod-f fullscreen toggle
-hc keybind $Mod-p pseudotile toggle
+hc keybind $Mod-Shift-space pseudotile toggle
 # The following cycles through the available layouts within a frame, but skips
 # layouts, if the layout change wouldn't affect the actual window positions.
 # I.e. if there are two windows within a frame, the grid layout is skipped.
@@ -176,11 +186,10 @@ herbstclient set tree_style '╾│ ├└╼─┐'
 hc detect_monitors
 
 # find the panel
-# panel=~/.config/herbstluftwm/panel.sh
-# [ -x "$panel" ] || panel=/etc/xdg/herbstluftwm/panel.sh
+#panel=~/.config/herbstluftwm/panel.sh
+#[ -x "$panel" ] || panel=/etc/xdg/herbstluftwm/panel.sh
 
 panel=~/.config/herbstluftwm/panel2.sh
-#panel=~/.config/herbstluftwm/panel.sh
 
 for monitor in $(herbstclient list_monitors | cut -d: -f1) ; do
     # start it on each monitor
