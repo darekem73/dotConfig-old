@@ -18,6 +18,7 @@ exec --no-startup-id conky -d -c ~/.conkyrc-stat
 exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
 exec --no-startup-id system-config-printer-applet
+exec --no-startup-id unclutter -idle 1 -root
 exec --no-startup-id mopidy
 exec --no-startup-id setxkbmap -option caps:escape
 
@@ -53,7 +54,7 @@ font pango:monospace 8
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Shift+Return exec i3-sensible-terminal
+bindsym $mod+Shift+Return exec stterm
 bindsym $mod+Return exec tilix
 #bindsym $mod+Shift+Return exec xterm
 
@@ -233,6 +234,7 @@ bindsym $mod+r mode "resize"
 bar {
 	position top
         status_command i3blocks
+        output eDP1
         #status_command i3status
         tray_output primary
 }
@@ -244,6 +246,7 @@ bindsym $mod+p exec --no-startup-id xterm -title "player" -e ncmpcpp
 # additional default window settings
 for_window [title="alsamixer"] floating enable move position center
 for_window [title="player"] floating enable move position mouse
+for_window [instance="zenity"] floating enable move position mouse
 for_window [window_role="pop-up"] floating enable move position center
 for_window [instance="file_progress"] floating enable move position center
 
