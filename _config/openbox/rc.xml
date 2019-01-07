@@ -609,6 +609,15 @@
         </startupnotify>
       </action>
     </keybind>
+    <keybind key="W-S-Return">
+      <action name="Execute">
+        <command>xterm</command>
+        <startupnotify>
+          <enabled>yes</enabled>
+          <name>Terminal</name>
+        </startupnotify>
+      </action>
+    </keybind>
     <keybind key="S-W-d">
       <action name="Execute">
         <command>rofi -show drun -font "Monospace 9"</command>
