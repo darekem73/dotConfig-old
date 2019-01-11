@@ -16,10 +16,11 @@ set $mod Mod4
 exec --no-startup-id nitrogen --restore
 exec --no-startup-id conky -d -c ~/.conkyrc-stat
 exec --no-startup-id nm-applet
-exec --no-startup-id blueman-applet
-exec --no-startup-id system-config-printer-applet
+#exec --no-startup-id blueman-applet
+#exec --no-startup-id system-config-printer-applet
 exec --no-startup-id unclutter -idle 1 -root
 exec --no-startup-id mopidy
+#exec --no-startup-id compton
 exec --no-startup-id setxkbmap -option caps:escape
 
 # setup multiple monitors
@@ -55,7 +56,7 @@ floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Shift+Return exec stterm
-bindsym $mod+Return exec tilix
+bindsym $mod+Return exec i3-sensible-terminal
 #bindsym $mod+Shift+Return exec xterm
 
 # kill focused window
@@ -123,7 +124,7 @@ bindsym Mod1+Right resize grow width 10px or 1ppt
 bindcode Mod1+23 layout toggle tabbed split
 
 # toggle borders
-hide_edge_borders both
+# hide_edge_borders both
 bindsym $mod+Shift+b border toggle
 
 # toggle tiling / floating
@@ -234,18 +235,20 @@ bindsym $mod+r mode "resize"
 bar {
 	position top
         status_command i3blocks
-        output eDP1
+        #output eDP1
         #status_command i3status
         tray_output primary
 }
 
 # alsamixer
-bindsym $mod+m exec --no-startup-id xterm -title "alsamixer" -e alsamixer
-bindsym $mod+p exec --no-startup-id xterm -title "player" -e ncmpcpp
+bindsym $mod+m exec --no-startup-id stterm -c "alsamixer" -e alsamixer
+bindsym $mod+p exec --no-startup-id stterm -c "player" -e ncmpcpp
 
 # additional default window settings
 for_window [title="alsamixer"] floating enable move position center
+for_window [instance="alsamixer"] floating enable move position center
 for_window [title="player"] floating enable move position mouse
+for_window [instance="player"] floating enable move position mouse
 for_window [instance="zenity"] floating enable move position mouse
 for_window [window_role="pop-up"] floating enable move position center
 for_window [instance="file_progress"] floating enable move position center
@@ -273,3 +276,59 @@ bindsym $mod+Ctrl+2 exec --no-startup-id i3-msg "append_layout ~/test-2.layout"
 bindsym $mod+Ctrl+3 exec --no-startup-id i3-msg "append_layout ~/test-3.layout"
 bindsym $mod+Ctrl+4 exec --no-startup-id i3-msg "append_layout ~/test-4.layout"
 bindsym $mod+Ctrl+0 exec --no-startup-id i3-save-tree > ~/tmp.layout
+
+
+### i3-gaps stuff ###
+
+# Necessary for i3-gaps to work properly (pixel can be any value)
+for_window [class="^.*"] border pixel 1
+
+# Smart Gaps
+# smart_gaps on
+
+# Smart Borders
+smart_borders on
+
+# Set inner/outer gaps
+gaps inner 7
+gaps outer 0
+
+# Gaps mode
+set $mode_gaps Gaps: (o) outer, (i) inner
+set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
+bindsym $mod+Shift+g mode "$mode_gaps"
+
+mode "$mode_gaps" {
+        bindsym o      mode "$mode_gaps_outer"
+        bindsym i      mode "$mode_gaps_inner"
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+mode "$mode_gaps_inner" {
+        bindsym plus  gaps inner current plus 5
+        bindsym minus gaps inner current minus 5
+        bindsym 0     gaps inner current set 0
+
+        bindsym Shift+plus  gaps inner all plus 5
+        bindsym Shift+minus gaps inner all minus 5
+        bindsym Shift+0     gaps inner all set 0
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+mode "$mode_gaps_outer" {
+        bindsym plus  gaps outer current plus 5
+        bindsym minus gaps outer current minus 5
+        bindsym 0     gaps outer current set 0
+
+        bindsym Shift+plus  gaps outer all plus 5
+        bindsym Shift+minus gaps outer all minus 5
+        bindsym Shift+0     gaps outer all set 0
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
