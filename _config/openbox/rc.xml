@@ -701,6 +701,15 @@
         </startupnotify>
       </action>
     </keybind>
+    <keybind key="W-9">
+      <action name="Execute">
+        <command>blurlock</command>
+        <startupnotify>
+          <enabled>yes</enabled>
+          <name>i3lock</name>
+        </startupnotify>
+      </action>
+    </keybind>
     <keybind key="S-W-p">
       <action name="SessionLogout"/>
     </keybind>
@@ -719,6 +728,16 @@
         <command>bl-exit</command>
       </action>
     </keybind>
+    <keybind key="W-0">
+      <action name="Execute">
+        <startupnotify>
+          <enabled>false</enabled>
+          <name>Logout</name>
+        </startupnotify>
+        <command>bl-exit</command>
+      </action>
+    </keybind>
+    
     <keybind key="W-Escape">
       <action name="Execute">
         <startupnotify>
