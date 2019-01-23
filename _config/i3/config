@@ -16,11 +16,11 @@ set $mod Mod4
 exec --no-startup-id nitrogen --restore
 exec --no-startup-id conky -d -c ~/.conkyrc-stat
 exec --no-startup-id nm-applet
-#exec --no-startup-id blueman-applet
-#exec --no-startup-id system-config-printer-applet
+exec --no-startup-id blueman-applet
+exec --no-startup-id system-config-printer-applet
 exec --no-startup-id unclutter -idle 1 -root
 exec --no-startup-id mopidy
-#exec --no-startup-id compton
+#exec_always --no-startup-id compton
 exec --no-startup-id setxkbmap -option caps:escape
 
 # setup multiple monitors
@@ -53,14 +53,24 @@ font pango:monospace 8
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
+#floating_minimum_size 640 x 360
+#floating_minimum_size 768 x 480
+floating_maximum_size 1910 x 1070
 
 # start a terminal
-bindsym $mod+Shift+Return exec stterm
-bindsym $mod+Return exec i3-sensible-terminal
-#bindsym $mod+Shift+Return exec xterm
+bindsym $mod+Shift+Return exec terminator
+bindsym $mod+Return exec tilix
+bindsym $mod+Ctrl+Return exec st
 
 # kill focused window
 bindsym $mod+Shift+q kill
+
+# scratchpad
+# Make the currently focused window a scratchpad
+bindsym $mod+Shift+minus move scratchpad
+
+# Show the first scratchpad window
+bindsym $mod+minus scratchpad show
 
 # start dmenu (a program launcher)
 #bindsym $mod+d exec dmenu_run
@@ -68,8 +78,8 @@ bindsym $mod+Shift+q kill
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
 #bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
-bindsym $mod+Shift+d exec --no-startup-id j4-dmenu-desktop
-bindsym $mod+d exec --no-startup-id dmenu_run
+bindsym $mod+Shift+d exec --no-startup-id j4-dmenu-desktop --dmenu="dmenu -fn 'DejaVu Sans Mono-9'"
+bindsym $mod+d exec --no-startup-id dmenu_run -fn 'DejaVu Sans Mono-9'
 bindsym $mod+z exec --no-startup-id rofi -show run -font "Monospace 9" -fake_transparency
 bindsym $mod+Shift+z exec --no-startup-id rofi -show drun -font "Monospace 9" -fake_transparency
 
@@ -96,6 +106,9 @@ bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
+
+# default orientation
+default_orientation auto
 
 # split in horizontal orientation
 bindsym $mod+h split h
@@ -132,6 +145,7 @@ bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
+# focus_wrapping force
 
 # focus the parent container
 bindsym $mod+a focus parent
@@ -152,6 +166,9 @@ bindsym $mod+8 workspace 8
 #bindsym $mod+0 workspace 10
 bindsym $mod+Ctrl+Left workspace prev
 bindsym $mod+Ctrl+Right workspace next
+
+# mouse warping to center of screen after jumping
+mouse_warping none
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
@@ -181,6 +198,8 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 #bindsym $mod+Control+l exec --no-startup-id blurlock
 #bindsym $mod+Shift+p exec --no-startup-id i3exit shutdown, mode "default"
 bindsym $mod+Shift+p exec --no-startup-id i3exit logout, mode "default"
+
+bindsym $mod+Ctrl+r exec i3-input -F 'rename workspace to "%s"' -P 'New name: '
 
 # Set shut down, restart and locking features
 bindsym $mod+0 mode "$mode_system"
@@ -241,17 +260,16 @@ bar {
 }
 
 # alsamixer
-bindsym $mod+m exec --no-startup-id stterm -c "alsamixer" -e alsamixer
-bindsym $mod+p exec --no-startup-id stterm -c "player" -e ncmpcpp
+bindsym $mod+m exec --no-startup-id xterm -title "alsamixer" -e alsamixer
+bindsym $mod+p exec --no-startup-id xterm -title "player" -e ncmpcpp
 
 # additional default window settings
 for_window [title="alsamixer"] floating enable move position center
-for_window [instance="alsamixer"] floating enable move position center
 for_window [title="player"] floating enable move position mouse
-for_window [instance="player"] floating enable move position mouse
 for_window [instance="zenity"] floating enable move position mouse
 for_window [window_role="pop-up"] floating enable move position center
 for_window [instance="file_progress"] floating enable move position center
+for_window [class="^.*"] border pixel 1
 
 # Volume controls
 bindsym XF86AudioLowerVolume exec amixer -D default sset Master 5%-
@@ -271,64 +289,5 @@ bindsym XF86TouchpadToggle exec /usr/bin/toggletouchpad.sh # toggle touchpad
 bindsym $mod+Shift+s exec --no-startup-id /usr/bin/monitor
 
 # manage layouts
-bindsym $mod+Ctrl+1 exec --no-startup-id i3-msg "append_layout ~/test-1.layout"
-bindsym $mod+Ctrl+2 exec --no-startup-id i3-msg "append_layout ~/test-2.layout"
-bindsym $mod+Ctrl+3 exec --no-startup-id i3-msg "append_layout ~/test-3.layout"
-bindsym $mod+Ctrl+4 exec --no-startup-id i3-msg "append_layout ~/test-4.layout"
+bindsym $mod+Ctrl+l exec --no-startup-id /usr/bin/layout
 bindsym $mod+Ctrl+0 exec --no-startup-id i3-save-tree > ~/tmp.layout
-
-
-### i3-gaps stuff ###
-
-# Necessary for i3-gaps to work properly (pixel can be any value)
-for_window [class="^.*"] border pixel 1
-
-# Smart Gaps
-# smart_gaps on
-
-# Smart Borders
-smart_borders on
-
-# Set inner/outer gaps
-gaps inner 7
-gaps outer 0
-
-# Gaps mode
-set $mode_gaps Gaps: (o) outer, (i) inner
-set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
-set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
-bindsym $mod+Shift+g mode "$mode_gaps"
-
-mode "$mode_gaps" {
-        bindsym o      mode "$mode_gaps_outer"
-        bindsym i      mode "$mode_gaps_inner"
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-}
-
-mode "$mode_gaps_inner" {
-        bindsym plus  gaps inner current plus 5
-        bindsym minus gaps inner current minus 5
-        bindsym 0     gaps inner current set 0
-
-        bindsym Shift+plus  gaps inner all plus 5
-        bindsym Shift+minus gaps inner all minus 5
-        bindsym Shift+0     gaps inner all set 0
-
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-}
-
-mode "$mode_gaps_outer" {
-        bindsym plus  gaps outer current plus 5
-        bindsym minus gaps outer current minus 5
-        bindsym 0     gaps outer current set 0
-
-        bindsym Shift+plus  gaps outer all plus 5
-        bindsym Shift+minus gaps outer all minus 5
-        bindsym Shift+0     gaps outer all set 0
-
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-}
-
