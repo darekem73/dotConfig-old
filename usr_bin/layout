@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LAYOUT=`ls ~/*.layout | dmenu`
+LAYOUT=`ls ~/*.layout | dmenu -p "Select layout:"`
 if [[ -n "$LAYOUT" ]]
 then
     # echo $LAYOUT
