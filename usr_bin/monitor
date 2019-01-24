@@ -20,6 +20,8 @@ elif [ $monitor_mode = "INTERNAL" ]; then
 	xrandr --output $INTERNAL_OUTPUT --auto --output $EXTERNAL_OUTPUT --auto --right-of $INTERNAL_OUTPUT
 fi
 
+notify-send Monitor\ mode "${monitor_mode}\ $(xrandr | egrep -v "^ " | cut -d \  -f1,2)"
+
 # finally store the current mode
 echo "${monitor_mode}" > /tmp/monitor_mode.dat
 
