@@ -287,11 +287,11 @@ bindsym XF86MonBrightnessDown exec xbacklight -dec 5 # decrease screen brightnes
 bindsym XF86TouchpadToggle exec /usr/bin/toggletouchpad.sh # toggle touchpad
 
 # Handle PrintScreen
-bindsym Print exec import -window root /tmp/screenshot.png
+bindsym Print exec import -window root /tmp/screenshot.png; exec notify-send Screenshot /tmp/screenshot.png
 
 # enable / disable second monitor
 bindsym $mod+Shift+s exec --no-startup-id /usr/bin/monitor
 
 # manage layouts
 bindsym $mod+Ctrl+l exec --no-startup-id /usr/bin/layout
-bindsym $mod+Ctrl+0 exec --no-startup-id i3-save-tree > ~/tmp.layout
+bindsym $mod+Shift+l exec --no-startup-id i3-save-tree > ~/tmp.layout; exec notify-send "Layout saved" ~/tmp.layout
