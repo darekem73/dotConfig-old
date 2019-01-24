@@ -1,0 +1,7 @@
+#!/bin/bash
+
+ID=`xprop -root | awk '/_NET_ACTIVE_WINDOW\(WINDOW\)/{print $NF}'`
+WN=`xprop -id $(xprop -root | awk '/_NET_ACTIVE_WINDOW\(WINDOW\)/{print $NF}') | awk '/_NET_WM_NAME\(STRING\)/{$1=$2="";print}' | cut -d'"' -f2`
+NN=`echo $WN | dmenu -p "rename window:"`
+xprop -id $ID -f _NET_WM_NAME\(STRING\) 8s -set _NET_WM_NAME\(STRING\) "$NN"
+# xprop -id $ID -f _NET_WM_NAME 8s -set _NET_WM_NAME "$NN"
