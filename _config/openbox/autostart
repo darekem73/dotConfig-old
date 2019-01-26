@@ -35,6 +35,7 @@ xset r rate 250 25
 #setxkbmap -option ctrl:nocaps
 # alternative: use as compose key
 #setxkbmap -option compose:caps
+setxkbmap -option caps:escape
 
 # Alias Super key to Super+Space for single-key menu.
 # See 'man xcape' for other possibilities.
