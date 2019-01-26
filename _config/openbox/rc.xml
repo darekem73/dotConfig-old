@@ -570,7 +570,7 @@
     </keybind>
     <keybind key="W-S-Return">
       <action name="Execute">
-        <command>xterm</command>
+        <command>st</command>
         <startupnotify>
           <enabled>yes</enabled>
           <name>Terminal</name>
