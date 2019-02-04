@@ -15,7 +15,7 @@ C=-1
 
 while [[ "$C" != "0" ]]; do
   menu
-  read -n 1 -p "Choice> " C
+  read -t 5 -n 1 -p "Choice> " C
   case $C in
 	  1) ncmpcpp
 		  ;;
@@ -28,6 +28,8 @@ while [[ "$C" != "0" ]]; do
 	  9) exec screenlock
 		  ;;
 	  0) echo; exit
+		  ;;
+	  "") echo; exit
 		  ;;
   esac
 done
