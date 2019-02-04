@@ -1,7 +1,8 @@
 #!/bin/bash
 
 menu() {
-	echo
+	clear
+	#echo
 	echo "---"
 	echo "1 - ncmpcpp"
 	echo "2 - alsamixer"
