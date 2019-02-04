@@ -1,6 +1,8 @@
 #!/bin/bash
 
 menu() {
+	echo
+	echo "---"
 	echo "1 - ncmpcpp"
 	echo "2 - alsamixer"
 	echo "3 - b+"
@@ -13,7 +15,7 @@ C=-1
 
 while [[ "$C" != "0" ]]; do
   menu
-  read -p "Choice> " C
+  read -n 1 -p "Choice> " C
   case $C in
 	  1) ncmpcpp
 		  ;;
@@ -25,7 +27,7 @@ while [[ "$C" != "0" ]]; do
 		  ;;
 	  9) exec screenlock
 		  ;;
-	  0) exit
+	  0) echo; exit
 		  ;;
   esac
 done
