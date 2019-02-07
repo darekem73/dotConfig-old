@@ -1,27 +1,35 @@
 conky.config = {
 	alignment = 'top_right',
 	background = true,
-	color2 = '03a023',
+--	color2 = '03a023',
+        color2 = '657ba0', -- steel blue
 	cpu_avg_samples = 2,
 	default_color = 'F9FAF9',
 --	default_color = '656667', -- Waldorf original colour
 --	default_color = '7a7a7a', -- Flame  & Bunsen Grey
 --	default_color = '929292', -- Labs Grey
---	default_color = 'C0C0C0', -- Silver	
+--	default_color = 'C0C0C0', -- Silver
 	double_buffer = true,
 --  font = 'Sans-serif:size=8',
     font = 'Sans-serif:size=8',
 	draw_shades = false,
+	stippled_borders = 0,
+        draw_borders = no,
+	draw_graph_borders = no,
+	draw_outline = no,
+	draw_shades = no,
 	gap_x = 25,
 	gap_y = 23,
 	minimum_width = 250,
 	no_buffers = true,
 	own_window = true,
 	own_window_type = 'override',
---  own_window_type = 'desktop',
-    own_window_class = 'Conky',
+        -- own_window_type = 'desktop',
+        -- own_window_type = 'normal',
+        own_window_class = 'Conky',
 	own_window_title = 'Conky',
---  own_window_hints = 'undecorated,below,skip_taskbar,skip_pager,sticky',
+	-- own_window_name = 'Conky',
+        own_window_hints = 'undecorated,below,skip_taskbar,skip_pager,sticky',
 	own_window_transparent = true,
 	update_interval = 2.0,
 	use_xft = true,
@@ -31,6 +39,7 @@ ${voffset 8}$color2${font Sans-serif:size=16}${time %A}$font\
 ${voffset -8}$alignr$color${font Sans-serif:size=38}${time %e}$font
 $color${voffset -30}$color${font Sans-serif:size=18}${time %b}$font\
 ${voffset -3} $color${font Sans-serif:size=20}${time %Y}$font$color2$hr
+$color${voffset -30}${goto 150}${font Sans-serif:size=12}${time %H:%M}
 #
 ${voffset 20}${goto 40}${color}CPU${font Sans-serif:bold:size=8}$alignr$cpu%
 ${voffset 5}${goto 40}$font$color2${top name 1}$alignr$color${top cpu 1}%
