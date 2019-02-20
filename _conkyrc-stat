@@ -1,8 +1,9 @@
 conky.config = {
 	alignment = 'top_right',
 	background = true,
---	color2 = '03a023',
-        color2 = '6c798e', -- steel blue
+--	color2 = '03a023', -- forest green
+--	color2 = '6c798e', -- steel blue
+	color2 = 'C0C0C0', -- Silver
 	cpu_avg_samples = 2,
 	default_color = 'F9FAF9',
 --	default_color = '656667', -- Waldorf original colour
@@ -39,7 +40,7 @@ ${voffset 8}$color2${font Sans-serif:size=16}${time %A}$font\
 ${voffset -8}$alignr$color${font Sans-serif:size=38}${time %e}$font
 $color${voffset -30}$color${font Sans-serif:size=18}${time %b}$font\
 ${voffset -3} $color${font Sans-serif:size=20}${time %Y}$font$color2$hr
-$color${voffset -30}${goto 150}${font Sans-serif:size=12}${time %H:%M}
+$color${voffset -30}${goto 135}${font Sans-serif:size=12}${time %H:%M}
 #
 ${voffset 20}${goto 40}${color}${font Sans-serif:bold:size=8}CPU$alignr$cpu%
 ${voffset 5}${goto 40}$font$color2${top name 1}$alignr$color${top cpu 1}%
