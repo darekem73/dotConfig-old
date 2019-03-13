@@ -39,15 +39,12 @@ bindsym $mod+Shift+q kill
 # start program launcher
 # bindsym $mod+d exec --no-startup-id dmenu_recency
 bindsym $mod+d exec --no-startup-id dmenu_run -fn 'DejaVu Sans Mono-9'
+bindsym $mod+Shift+d exec --no-startup-id rofi -show drun -font 'Monospace 9' 
 
 # launch categorized menu
 # bindsym $mod+z exec --no-startup-id morc_menu
 
-################################################################################################
-## sound-section - DO NOT EDIT if you wish to automatically upgrade Alsa -> Pulseaudio later! ##
-################################################################################################
-
-exec --no-startup-id volumeicon
+#exec --no-startup-id volumeicon
 #bindsym $mod+Ctrl+m exec terminal -e 'alsamixer'
 #exec --no-startup-id pulseaudio
 #exec --no-startup-id pa-applet
@@ -56,8 +53,8 @@ exec --no-startup-id volumeicon
 ################################################################################################
 
 # Screen brightness controls
-# bindsym XF86MonBrightnessUp exec "xbacklight -inc 10; notify-send 'brightness up'"
-# bindsym XF86MonBrightnessDown exec "xbacklight -dec 10; notify-send 'brightness down'"
+bindsym XF86MonBrightnessUp exec "xbacklight -inc 5; notify-send 'brightness up'"
+bindsym XF86MonBrightnessDown exec "xbacklight -dec 5; notify-send 'brightness down'"
 
 # Start Applications
 # bindsym $mod+Ctrl+b exec terminal -e 'bmenu'
@@ -233,7 +230,8 @@ bindsym $mod+Shift+m exec --no-startup-id /usr/bin/monitor
 
 # manage layouts
 bindsym $mod+Ctrl+l exec --no-startup-id layout
-bindsym $mod+Shift+l exec --no-startup-id i3-save-tree > ~/tmp.layout; exec notify-send "Layout saved"
+#bindsym $mod+Shift+l exec --no-startup-id i3-save-tree --output=eDP1 > ~/tmp.layout; exec notify-send "Layout saved"
+bindsym $mod+Shift+l exec --no-startup-id ~/i3-save-layout.sh > ~/tmp.layout; exec notify-send "Layout saved"
 
 # Open applications on specific workspaces
 # assign [class="Thunderbird"] $ws1
@@ -340,12 +338,12 @@ bindsym Mod1+Ctrl+l exec --no-startup-id screenlock
 #exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id nitrogen --restore; sleep 1; compton -b
 #exec --no-startup-id manjaro-hello
-exec --no-startup-id nm-applet
-exec --no-startup-id xfce4-power-manager
+#exec --no-startup-id nm-applet
+#exec --no-startup-id xfce4-power-manager
 #exec --no-startup-id pamac-tray
 #exec --no-startup-id clipit
 exec --no-startup-id blueman-applet
-exec --no-startup-id system-config-printer-applet
+#exec --no-startup-id system-config-printer-applet
 exec --no-startup-id mopidy
 # exec_always --no-startup-id sbxkb
 # exec --no-startup-id start_conky_maia
@@ -430,10 +428,10 @@ bindsym $mod+b bar mode toggle
 
 # Theme colors
 # class                   border  backgr. text    indic.   child_border
-  client.focused          #556064 #223034 #aaaaaa #FDF6E3 #990000
+  client.focused          #556064 #223034 #ffffff #FDF6E3 #990000
 #  client.focused          #556064 #556064 #80FFF9 #FDF6E3
-#  client.focused_inactive #2F3D44 #2F3D44 #1ABC9C #454948
-#  client.unfocused        #2F3D44 #2F3D44 #1ABC9C #454948
+  client.focused_inactive #2F3D44 #0F3D3d #63aaa0 #454948
+  client.unfocused        #2F3D44 #2F3D44 #777777 #454948
 #  client.urgent           #CB4B16 #FDF6E3 #1ABC9C #268BD2
 #  client.placeholder      #000000 #0c0c0c #ffffff #000000 
 
