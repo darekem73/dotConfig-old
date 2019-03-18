@@ -8,7 +8,7 @@ set $mod Mod4
 # workspace_layout tabbed <stacking|tabbed>
 
 # Configure border style <normal|1pixel|pixel xx|none|pixel>
-new_window pixel 1
+new_window pixel 3
 new_float normal
 
 # Hide borders
@@ -19,7 +19,7 @@ bindsym $mod+Shift+b border toggle
 # change borders
 bindsym $mod+u border none
 bindsym $mod+y border pixel 1
-bindsym $mod+n border normal
+# bindsym $mod+n border normal
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -29,7 +29,7 @@ font xft:Monospace 9
 # Use Mouse+$mod to drag floating windows
 floating_modifier $mod
 
-# start a st
+# start a terminal
 bindsym $mod+Return exec terminator
 bindsym $mod+Shift+Return exec st
 
@@ -39,16 +39,13 @@ bindsym $mod+Shift+q kill
 # start program launcher
 # bindsym $mod+d exec --no-startup-id dmenu_recency
 bindsym $mod+d exec --no-startup-id dmenu_run -fn 'DejaVu Sans Mono-9'
+bindsym $mod+Shift+d exec --no-startup-id rofi -show drun -font 'Monospace 9' 
 
 # launch categorized menu
-bindsym $mod+z exec --no-startup-id morc_menu
+# bindsym $mod+z exec --no-startup-id morc_menu
 
-################################################################################################
-## sound-section - DO NOT EDIT if you wish to automatically upgrade Alsa -> Pulseaudio later! ##
-################################################################################################
-
-exec --no-startup-id volumeicon
-#bindsym $mod+Ctrl+m exec st -e 'alsamixer'
+#exec --no-startup-id volumeicon
+#bindsym $mod+Ctrl+m exec terminal -e 'alsamixer'
 #exec --no-startup-id pulseaudio
 #exec --no-startup-id pa-applet
 #bindsym $mod+Ctrl+m exec pavucontrol
@@ -56,16 +53,16 @@ exec --no-startup-id volumeicon
 ################################################################################################
 
 # Screen brightness controls
-# bindsym XF86MonBrightnessUp exec "xbacklight -inc 10; notify-send 'brightness up'"
-# bindsym XF86MonBrightnessDown exec "xbacklight -dec 10; notify-send 'brightness down'"
+bindsym XF86MonBrightnessUp exec "xbacklight -inc 5; notify-send 'brightness up'"
+bindsym XF86MonBrightnessDown exec "xbacklight -dec 5; notify-send 'brightness down'"
 
 # Start Applications
-# bindsym $mod+Ctrl+b exec st -e 'bmenu'
+# bindsym $mod+Ctrl+b exec terminal -e 'bmenu'
 # bindsym $mod+F2 exec palemoon
 # bindsym $mod+F3 exec pcmanfm
 # bindsym $mod+F3 exec ranger
 # bindsym $mod+Shift+F3 exec gksu pcmanfm
-# bindsym $mod+F5 exec st -e 'mocp'
+# bindsym $mod+F5 exec terminal -e 'mocp'
 # bindsym $mod+t exec --no-startup-id pkill compton
 # bindsym $mod+Ctrl+t exec --no-startup-id compton -b
 # bindsym $mod+Shift+d --release exec "killall dunst; exec notify-send 'restart dunst'"
@@ -75,7 +72,7 @@ bindsym $mod+Shift+Print --release exec --no-startup-id i3-scrot -s
 # bindsym $mod+Shift+h exec xdg-open /usr/share/doc/manjaro/i3_help.pdf
 # bindsym $mod+Ctrl+x --release exec --no-startup-id xkill
 
-# focus_follows_mouse no
+focus_follows_mouse no
 
 # change focus
 # bindsym $mod+j focus left
@@ -233,7 +230,8 @@ bindsym $mod+Shift+m exec --no-startup-id /usr/bin/monitor
 
 # manage layouts
 bindsym $mod+Ctrl+l exec --no-startup-id layout
-bindsym $mod+Shift+l exec --no-startup-id i3-save-tree > ~/tmp.layout; exec notify-send "Layout saved"
+#bindsym $mod+Shift+l exec --no-startup-id i3-save-tree --output=eDP1 > ~/tmp.layout; exec notify-send "Layout saved"
+bindsym $mod+Shift+l exec --no-startup-id ~/i3-save-layout.sh > ~/tmp.layout; exec notify-send "Layout saved"
 
 # Open applications on specific workspaces
 # assign [class="Thunderbird"] $ws1
@@ -266,7 +264,7 @@ for_window [class="Simple-scan"] floating enable border normal
 for_window [class="(?i)System-config-printer.py"] floating enable border normal
 for_window [class="Skype"] floating enable border normal
 for_window [class="Timeset-gui"] floating enable border normal
-for_window [class="(?i)virtualbox"] floating enable border normal
+# for_window [class="(?i)virtualbox"] floating enable border normal
 for_window [class="Xfburn"] floating enable
 for_window [title="alsamixer"] floating enable move position center
 for_window [title="player"] floating enable move position mouse
@@ -292,7 +290,8 @@ bindsym $mod+Shift+p exec --no-startup-id i3exit logout, mode "default"
 
 # Set shut down, restart and locking features
 bindsym $mod+0 mode "$mode_system"
-set $mode_system (l)ock, (e)xit, switch_(u)ser, (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown
+# set $mode_system (l)ock, (e)xit, switch_(u)ser, (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown
+set $mode_system (l)ock, (e)xit, switch_(u)ser, (s)uspend, (r)eboot, (Shift+s)hutdown
 mode "$mode_system" {
     bindsym l exec --no-startup-id i3exit lock, mode "default"
     bindsym s exec --no-startup-id i3exit suspend, mode "default"
@@ -336,23 +335,23 @@ bindsym $mod+9 exec --no-startup-id blurlock
 bindsym Mod1+Ctrl+l exec --no-startup-id screenlock
 
 # Autostart applications
-exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+#exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id nitrogen --restore; sleep 1; compton -b
 #exec --no-startup-id manjaro-hello
-exec --no-startup-id nm-applet
-exec --no-startup-id xfce4-power-manager
-exec --no-startup-id pamac-tray
-exec --no-startup-id clipit
+#exec --no-startup-id nm-applet
+#exec --no-startup-id xfce4-power-manager
+#exec --no-startup-id pamac-tray
+#exec --no-startup-id clipit
 exec --no-startup-id blueman-applet
-exec --no-startup-id system-config-printer-applet
+#exec --no-startup-id system-config-printer-applet
 exec --no-startup-id mopidy
 # exec_always --no-startup-id sbxkb
 # exec --no-startup-id start_conky_maia
 exec --no-startup-id conky -d -c ~/.conkyrc-stat
 # exec --no-startup-id start_conky_green
 exec --no-startup-id xautolock -time 10 -locker blurlock
-exec_always --no-startup-id ff-theme-util
-exec_always --no-startup-id fix_xcursor
+#exec_always --no-startup-id ff-theme-util
+#exec_always --no-startup-id fix_xcursor
 exec --no-startup-id setxkbmap -option caps:escape
 exec --no-startup-id xset r rate 200 40
 
@@ -360,14 +359,14 @@ exec --no-startup-id xset r rate 200 40
 bindsym $mod+m exec --no-startup-id st -t "alsamixer" -e alsamixer
 bindsym $mod+p exec --no-startup-id st -t "player" -e ncmpcpp
 
-# Color palette used for the st ( ~/.Xresources file )
+# Color palette used for the terminal ( ~/.Xresources file )
 # Colors are gathered based on the documentation:
 # https://i3wm.org/docs/userguide.html#xresources
 # Change the variable name at the place you want to match the color
-# of your st like this:
+# of your terminal like this:
 # [example]
 # If you want your bar to have the same background color as your 
-# st background change the line 362 from:
+# terminal background change the line 362 from:
 # background #14191D
 # to:
 # background $term_background
@@ -403,10 +402,10 @@ bar {
 #	tray_output primary
 #	tray_output eDP1
 
-	bindsym button4 nop
-	bindsym button5 nop
+	# bindsym button4 nop
+	# bindsym button5 nop
 	# font xft:'DejaVu Sans Mono' 9
-	font xft:Monospace 9
+	font xft:Monospace 8
 	# font xft:URWGothic-Book 11
 	# strip_workspace_numbers yes
 
@@ -416,11 +415,11 @@ bar {
         separator  #454947
 
 #                           border  backgr. text
-        focused_workspace  #F9FAF9 #16a085 #292F34
-        active_workspace   #595B5B #353836 #FDF6E3
-        inactive_workspace #595B5B #222D31 #EEE8D5
-        binding_mode       #16a085 #2C2C2C #F9FAF9
-        urgent_workspace   #16a085 #FDF6E3 #E5201D
+#        focused_workspace  #F9FAF9 #16a085 #292F34
+#        active_workspace   #595B5B #353836 #FDF6E3
+#        inactive_workspace #595B5B #222D31 #EEE8D5
+#        binding_mode       #16a085 #2C2C2C #F9FAF9
+#        urgent_workspace   #16a085 #FDF6E3 #E5201D
     }
 }
 
@@ -429,13 +428,14 @@ bindsym $mod+b bar mode toggle
 
 # Theme colors
 # class                   border  backgr. text    indic.   child_border
-  client.focused          #556064 #556064 #80FFF9 #FDF6E3
-  client.focused_inactive #2F3D44 #2F3D44 #1ABC9C #454948
-  client.unfocused        #2F3D44 #2F3D44 #1ABC9C #454948
-  client.urgent           #CB4B16 #FDF6E3 #1ABC9C #268BD2
-  client.placeholder      #000000 #0c0c0c #ffffff #000000 
+  client.focused          #556064 #223034 #ffffff #FDF6E3 #990000
+#  client.focused          #556064 #556064 #80FFF9 #FDF6E3
+  client.focused_inactive #2F3D44 #0F3D3d #63aaa0 #454948
+  client.unfocused        #2F3D44 #2F3D44 #777777 #454948
+#  client.urgent           #CB4B16 #FDF6E3 #1ABC9C #268BD2
+#  client.placeholder      #000000 #0c0c0c #ffffff #000000 
 
-  client.background       #2B2C2B
+#  client.background       #2B2C2B
 
 #############################
 ### settings for i3-gaps: ###
