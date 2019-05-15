@@ -12,6 +12,7 @@
 import           XMonad                          hiding ((|||))
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.DynamicLog
+import           XMonad.Hooks.DynamicHooks
 import           XMonad.Hooks.ManageHelpers
 import           XMonad.Layout.Accordion
 import           XMonad.Layout.DecorationMadness
@@ -25,7 +26,9 @@ import           XMonad.Layout.Tabbed
 import           XMonad.Layout.Gaps
 import           XMonad.Util.EZConfig
 import           XMonad.Util.Run
+import           XMonad.Util.Scratchpad
 import           XMonad.Util.EZConfig
+import qualified XMonad.StackSet as W
 import           System.IO
 
 main = do
@@ -34,21 +37,25 @@ main = do
   conky <- spawnPipe "conky -d -c /home/darek/.conkyrc-stat"
   xset <- spawnPipe "xset r rate 200 40"
   statusBar <- spawnPipe "/usr/bin/xmobar /home/darek/.xmonad/xmobarrc"
-  xmonad defaultConfig {
+  xmonad $ def {
     modMask = mod1Mask
     , borderWidth = 1
     , terminal = "terminator"
-    , manageHook = manageDocks <+> manageHook defaultConfig
+    , manageHook = manageDocks <+> (scratchpadManageHook $ (W.RationalRect 0.1 0.2 0.8 0.4))
+                               <+> dynamicMasterHook <+> manageHook def
     , layoutHook = avoidStruts $ smartBorders $ 
                tall ||| wide ||| full ||| circle ||| sTabbed ||| acc
     , handleEventHook = mconcat
                           [ docksEventHook
-                          , handleEventHook defaultConfig ]
+                          , handleEventHook def ]
     , logHook = dynamicLogWithPP $ xmobarPP
                         { ppOutput = hPutStrLn statusBar
                         , ppTitle = xmobarColor "green" "" . shorten 50
                         }
-  }
+  } `additionalKeys` [
+                       ((mod1Mask, xK_grave), scratchpad)
+                     ] where
+                       scratchpad = scratchpadSpawnActionCustom "st -n scratchpad"
 
 tall   = renamed [Replace "tall"] $ Tall 1 0.03 0.5
 wide   = renamed [Replace "wide"] $ Mirror tall
