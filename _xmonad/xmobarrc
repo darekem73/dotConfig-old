@@ -4,19 +4,39 @@ Config {  font = "xft:Monospace:pixelsize=11"
         -- , position = TopW L 94
         , lowerOnStart = False
         , commands = [ 
-            -- , Run Network "wlan0" ["-t","<dev>: [<rx>/<tx>]"] 10
-            Run Cpu ["-t","Cpu: <total>","-L","3","-H","50","--normal",
+            Run Network "wlan0" ["-t","<dev>: [<rx>/<tx>]"] 10
+            , Run Wireless "wlan0" [] 10
+            , Run Cpu ["-t","Cpu: <total>","-L","3","-H","50","--normal",
                 "green","--high","red"] 10
-            , Run CpuFreq ["-t","Freq: <cpu0>/<cpu1> GHz","-L","0","-H","2"
-                ,"-l","lightblue","-n","white","-h","red"] 10
+            -- , Run CpuFreq ["-t","Freq: <cpu0>/<cpu1> GHz","-L","0","-H","2"
+            --    ,"-l","lightblue","-n","white","-h","red"] 10
             , Run Memory ["-t","Mem: <usedratio>%"] 10
 	    , Run Swap [] 10
+	    , Run DiskU [("/", "<free>/<size>"), ("sda6", "<free>/<size>")]
+                        ["-L", "20", "-H", "50", "-m", "1", "-p", "3"]
+                        20
             , Run Date "%a %Y-%m-%d %H:%M" "date" 10
             , Run StdinReader
+	    , Run Battery    [ "--template" , "Batt: <acstatus>"
+                             , "--Low"      , "10"        -- units: %
+                             , "--High"     , "80"        -- units: %
+                             , "--low"      , "darkred"
+                             , "--normal"   , "darkorange"
+                             , "--high"     , "darkgreen"
+
+                             , "--" -- battery specific options
+                                       -- discharging status
+                                       , "-o"	, "<left>% (<timeleft>)"
+                                       -- AC "on" status
+                                       , "-O"	, "<fc=#dAA520>Charging</fc>"
+                                       -- charged status
+                                       , "-i"	, "<fc=#006000>Charged</fc>"
+                             ] 50
+            -- , Run Volume "default" "Master" [] 10
             -- , Run Com "dcop" ["kxkb", "kxkb", "getCurrentLayout"] "kbd" 20
         ]
         , sepChar = "%"
         , alignSep = "}{"
         -- , template = "<fc=#ff66ff>%date%</fc> %LGAV% } %StdinReader% { %wlan0% | %cpu% | %memory%" 
-	, template = "%StdinReader% }{ %cpu% | %memory% * %swap%    <fc=#ee9a00>%date%</fc>"
+	, template = "%StdinReader% }{ %wlan0% %wlan0wi% | %cpu% | %memory% * %swap% | %disku% | %battery% | <fc=#ee9a00>%date%</fc>"
 }

@@ -35,15 +35,18 @@ main = do
   nitrogen <- spawnPipe "nitrogen --restore"
   compton <- spawnPipe "compton &"
   conky <- spawnPipe "conky -d -c /home/darek/.conkyrc-stat"
+  caps <- spawnPipe "setxkbmap -option caps:escape"
+  autolock <- spawnPipe "xautolock -time 10 -locker screenlock"
   xset <- spawnPipe "xset r rate 200 40"
+  powermanager <- spawnPipe "xfce4-power-manager &"
   statusBar <- spawnPipe "/usr/bin/xmobar /home/darek/.xmonad/xmobarrc"
   xmonad $ def {
     modMask = mod1Mask
-    , borderWidth = 1
+    , borderWidth = 3
     , terminal = "terminator"
-    , manageHook = manageDocks <+> (scratchpadManageHook $ (W.RationalRect 0.1 0.2 0.8 0.4))
+    , manageHook = manageDocks <+> (scratchpadManageHook $ (W.RationalRect 0.2 0.2 0.6 0.5))
                                <+> dynamicMasterHook <+> manageHook def
-    , layoutHook = avoidStruts $ smartBorders $ 
+    , layoutHook = avoidStruts $  
                tall ||| wide ||| full ||| circle ||| sTabbed ||| acc
     , handleEventHook = mconcat
                           [ docksEventHook
@@ -53,7 +56,9 @@ main = do
                         , ppTitle = xmobarColor "green" "" . shorten 50
                         }
   } `additionalKeys` [
-                       ((mod1Mask, xK_grave), scratchpad)
+                         ((mod1Mask, xK_grave), scratchpad)
+		       , ((mod1Mask .|. controlMask, xK_l), spawn "screenlock")
+		       , ((mod1Mask, xK_m), spawn "pavucontrol")
                      ] where
                        scratchpad = scratchpadSpawnActionCustom "st -n scratchpad"
 
