@@ -58,7 +58,6 @@ main = do
   } `additionalKeys` [
                          ((mod1Mask, xK_grave), scratchpad)
 		       , ((mod1Mask .|. controlMask, xK_l), spawn "screenlock")
-		       , ((mod1Mask, xK_m), spawn "pavucontrol")
                      ] where
                        scratchpad = scratchpadSpawnActionCustom "st -n scratchpad"
 

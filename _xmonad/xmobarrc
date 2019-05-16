@@ -4,8 +4,9 @@ Config {  font = "xft:Monospace:pixelsize=11"
         -- , position = TopW L 94
         , lowerOnStart = False
         , commands = [ 
-            Run Network "wlan0" ["-t","<dev>: [<rx>/<tx>]"] 10
-            , Run Wireless "wlan0" [] 10
+            -- Run Network "wlan0" ["-t","<dev>: [<rx>/<tx>]"] 10
+            Run Wireless "wlan0" ["-t", "<essid> <quality>", "-L", "30", "-H", "70",
+              "-l", "red", "-n","yellow", "-h", "green"] 10
             , Run Cpu ["-t","Cpu: <total>","-L","3","-H","50","--normal",
                 "green","--high","red"] 10
             -- , Run CpuFreq ["-t","Freq: <cpu0>/<cpu1> GHz","-L","0","-H","2"
@@ -34,9 +35,11 @@ Config {  font = "xft:Monospace:pixelsize=11"
                              ] 50
             -- , Run Volume "default" "Master" [] 10
             -- , Run Com "dcop" ["kxkb", "kxkb", "getCurrentLayout"] "kbd" 20
+	    , Run Com "gwaddress" [] "gw" 2
+	    , Run Com "netdiag.sh" [] "net" 2
         ]
         , sepChar = "%"
         , alignSep = "}{"
         -- , template = "<fc=#ff66ff>%date%</fc> %LGAV% } %StdinReader% { %wlan0% | %cpu% | %memory%" 
-	, template = "%StdinReader% }{ %wlan0% %wlan0wi% | %cpu% | %memory% * %swap% | %disku% | %battery% | <fc=#ee9a00>%date%</fc>"
+	, template = "%StdinReader% }{ %wlan0wi% | %gw% | %net% | %cpu% | %memory% * %swap% | %disku% | %battery% | <fc=#ee9a00>%date%</fc>"
 }
