@@ -63,8 +63,8 @@ main = do
                        , ((mod1Mask, xK_c), sendMessage (JumpToLayout "accordion"))
                        , ((mod1Mask, xK_f), sendMessage (JumpToLayout "full"))
                        , ((mod1Mask, xK_d), sendMessage (JumpToLayout "wide"))
-                       , ((mod1Mask, xK_a), sendMessage MirrorShrink)
-                       , ((mod1Mask, xK_z), sendMessage MirrorExpand)
+                       , ((mod1Mask, xK_z), sendMessage MirrorShrink)
+                       , ((mod1Mask, xK_a), sendMessage MirrorExpand)
                      ]
    `additionalKeysP` [
                        -- Move the focused window
