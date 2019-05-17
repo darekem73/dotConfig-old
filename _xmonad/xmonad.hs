@@ -86,7 +86,7 @@ main = do
                      ]
 
 tall   = renamed [Replace "tall"] $ spacing 3 $ ResizableTall 1 (3/100) (1/2) []
-wide   = renamed [Replace "wide"] $ spacing 3 $ Mirror $ tall
+wide   = renamed [Replace "wide"] $ Mirror $ tall
 full   = renamed [Replace "full"] $ spacing 3 $ Full
 circle = renamed [Replace "circle"] $ circleSimpleDefaultResizable
 stab   = renamed [Replace "tabbed"] $ simpleTabbed
