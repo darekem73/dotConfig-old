@@ -78,15 +78,15 @@ main = do
                      ]
    `additionalKeysP` [
                        -- Move the focused window
-                         ("M-<U>", withFocused (keysMoveWindow (0, -5)))
-                       , ("M-<D>", withFocused (keysMoveWindow (0, 5)))
-                       , ("M-<L>", withFocused (keysMoveWindow (-5, 0)))
-                       , ("M-<R>", withFocused (keysMoveWindow (5, 0)))
+                         ("M-<U>", withFocused (keysMoveWindow (0, -15)))
+                       , ("M-<D>", withFocused (keysMoveWindow (0, 15)))
+                       , ("M-<L>", withFocused (keysMoveWindow (-15, 0)))
+                       , ("M-<R>", withFocused (keysMoveWindow (15, 0)))
                        -- Resize the focused window
-                       , ("M-S-<U>", withFocused (keysResizeWindow (0, -5) (0, 0)))
-                       , ("M-S-<D>", withFocused (keysResizeWindow (0, 5) (0, 0)))
-                       , ("M-S-<R>", withFocused (keysResizeWindow (5, 0) (0, 0)))
-                       , ("M-S-<L>", withFocused (keysResizeWindow (-5, 0) (0, 0)))
+                       , ("M-S-<U>", withFocused (keysResizeWindow (0, -15) (0, 0)))
+                       , ("M-S-<D>", withFocused (keysResizeWindow (0, 15) (0, 0)))
+                       , ("M-S-<R>", withFocused (keysResizeWindow (15, 0) (0, 0)))
+                       , ("M-S-<L>", withFocused (keysResizeWindow (-15, 0) (0, 0)))
                        -- Go to the next / previous workspace
                        , ("M-C-<R>", nextWS)
                        , ("M-C-<L>", prevWS)
