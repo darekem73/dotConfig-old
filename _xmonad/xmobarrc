@@ -6,17 +6,18 @@ Config {  font = "xft:Monospace:pixelsize=11"
         , commands = [ 
             -- Run Network "wlan0" ["-t","<dev>: [<rx>/<tx>]"] 10
             Run Wireless "wlan0" ["-t", "<essid> <quality>", "-L", "30", "-H", "70",
-              "-l", "red", "-n","yellow", "-h", "green"] 10
+              "-l", "red", "-n","yellow", "-h", "green"] 20
             , Run Cpu ["-t","Cpu: <total>","-L","3","-H","50","--normal",
-                "green","--high","red"] 10
+                "green","--high","red"] 20
             -- , Run CpuFreq ["-t","Freq: <cpu0>/<cpu1> GHz","-L","0","-H","2"
             --    ,"-l","lightblue","-n","white","-h","red"] 10
-            , Run Memory ["-t","Mem: <usedratio>%"] 10
-	    , Run Swap [] 10
+            , Run Memory ["-t","Mem: <usedratio>%","-L","40","-H","80"
+	          ,"-l","green","-n","orange","-h","red"] 20
+	    , Run Swap [] 100
 	    , Run DiskU [("/", "<free>/<size>"), ("sda6", "<free>/<size>")]
                         ["-L", "20", "-H", "50", "-m", "1", "-p", "3"]
-                        20
-            , Run Date "%a %Y-%m-%d %H:%M" "date" 10
+                        100
+            , Run Date "%a %Y-%m-%d %H:%M" "date" 100
             , Run StdinReader
 	    , Run Battery    [ "--template" , "Batt: <acstatus>"
                              , "--Low"      , "10"        -- units: %
@@ -35,8 +36,8 @@ Config {  font = "xft:Monospace:pixelsize=11"
                              ] 50
             -- , Run Volume "default" "Master" [] 10
             -- , Run Com "dcop" ["kxkb", "kxkb", "getCurrentLayout"] "kbd" 20
-	    , Run Com "gwaddress" [] "gw" 2
-	    , Run Com "netdiag.sh" [] "net" 2
+	    , Run Com "gwaddress" [] "gw" 20
+	    , Run Com "netdiag.sh" [] "net" 20
         ]
         , sepChar = "%"
         , alignSep = "}{"

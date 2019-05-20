@@ -59,7 +59,8 @@ main = do
           spawnOnce "xfce4-power-manager &"
   } `additionalKeys` [
                          ((mod1Mask, xK_grave), scratchpadSpawnActionCustom "st -n scratchpad")
-                       , ((mod1Mask .|. controlMask, xK_l), spawn "screenlock")
+                       -- , ((mod1Mask .|. controlMask, xK_l), spawn "screenlock")
+                       , ((mod1Mask .|. controlMask, xK_l), spawn "blurlock")
                        , ((mod1Mask, xK_c), sendMessage (JumpToLayout "accordion"))
                        , ((mod1Mask, xK_f), sendMessage (JumpToLayout "full"))
                        , ((mod1Mask, xK_d), sendMessage (JumpToLayout "wide"))
