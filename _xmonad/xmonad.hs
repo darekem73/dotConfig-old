@@ -14,6 +14,9 @@ import           XMonad.Layout.NoBorders
 import           XMonad.Layout.PerWorkspace
 import           XMonad.Layout.Renamed
 import           XMonad.Layout.Tabbed
+import           XMonad.Layout.Grid
+import           XMonad.Layout.TwoPane
+-- import           XMonad.Layout.StackTile
 -- import           XMonad.Layout.Gaps
 import           XMonad.Layout.ResizableTile     -- Resizable Horizontal border
 import           XMonad.Layout.ThreeColumns
@@ -22,6 +25,8 @@ import           XMonad.Layout.ThreeColumns
 -- import           XMonad.Layout.SimpleFloat       -- simpleFloat, floating layout
 -- import           XMonad.Layout.ToggleLayouts     -- Full window at any time
 import           XMonad.Layout.Spacing           -- this makes smart space around windows
+import           XMonad.Layout.Combo
+import           XMonad.Layout.WindowNavigation
 import           XMonad.Util.EZConfig
 import           XMonad.Util.Run
 import           XMonad.Util.Scratchpad
@@ -41,7 +46,7 @@ main = do
     , manageHook = manageDocks <+> (scratchpadManageHook $ (W.RationalRect 0.2 0.2 0.6 0.5))
                                <+> dynamicMasterHook <+> manageHook def
     , layoutHook = avoidStruts $ 
-               tall ||| wide ||| full ||| three ||| stab ||| acc
+               tall ||| wide ||| dock ||| full ||| three ||| grid ||| stab ||| acc ||| combo
     , handleEventHook = mconcat
                           [ docksEventHook
                           , handleEventHook def ]
@@ -61,11 +66,15 @@ main = do
                          ((mod1Mask, xK_grave), scratchpadSpawnActionCustom "st -n scratchpad")
                        -- , ((mod1Mask .|. controlMask, xK_l), spawn "screenlock")
                        , ((mod1Mask .|. controlMask, xK_l), spawn "blurlock")
-                       , ((mod1Mask, xK_c), sendMessage (JumpToLayout "accordion"))
+                       , ((mod1Mask, xK_n), sendMessage (JumpToLayout "accordion"))
+                       , ((mod1Mask, xK_c), sendMessage (JumpToLayout "dock"))
                        , ((mod1Mask, xK_f), sendMessage (JumpToLayout "full"))
                        , ((mod1Mask, xK_d), sendMessage (JumpToLayout "wide"))
+                       , ((mod1Mask, xK_g), sendMessage (JumpToLayout "grid"))
                        , ((mod1Mask, xK_z), sendMessage MirrorShrink)
                        , ((mod1Mask, xK_a), sendMessage MirrorExpand)
+                       , ((mod1Mask, xK_bracketleft), sendMessage $ Move L)
+                       , ((mod1Mask, xK_bracketright), sendMessage $ Move R)
                      ]
    `additionalKeysP` [
                        -- Move the focused window
@@ -93,3 +102,6 @@ circle = renamed [Replace "circle"] $ circleSimpleDefaultResizable
 stab   = renamed [Replace "tabbed"] $ simpleTabbed
 acc    = renamed [Replace "accordion"] $ spacing 3 $ Accordion
 three  = renamed [Replace "three"] $ spacing 3 $ ThreeColMid 1 (3/100) (1/2)
+grid   = renamed [Replace "grid"] $ spacing 3 $ Grid
+dock   = renamed [Replace "dock"] $ spacing 3 $ TwoPane (3/100) (1/2)
+combo  = renamed [Replace "combo"] $ windowNavigation (combineTwo (TwoPane (3/100) (1/2)) (Accordion) (Accordion))
