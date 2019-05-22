@@ -1,5 +1,6 @@
 --
-import           XMonad                          hiding ((|||))
+import           XMonad as X                         hiding ((|||))
+-- import qualified XMonad as X
 import           XMonad.Util.SpawnOnce
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.DynamicLog
@@ -29,10 +30,14 @@ import           XMonad.Layout.Combo
 import           XMonad.Layout.WindowNavigation
 import           XMonad.Util.EZConfig
 import           XMonad.Util.Run
+-- import           XMonad.Util.NamedWindows (getName)
 import           XMonad.Util.Scratchpad
 import           XMonad.Actions.CycleWS
+import           XMonad.Actions.WindowBringer
+import           XMonad.Actions.GridSelect
 -- import           XMonad.Prompt
 -- import           XMonad.Prompt.Input
+import           XMonad.Actions.WithAll
 import           XMonad.Actions.FloatKeys
 import qualified XMonad.StackSet as W
 import           System.IO
@@ -79,8 +84,12 @@ main = do
                        , ((mod1Mask, xK_z), sendMessage MirrorShrink)
                        , ((mod1Mask, xK_a), sendMessage MirrorExpand)
 		       , ((mod1Mask, xK_b), sendMessage $ ToggleStruts)
+                       , ((mod1Mask .|. shiftMask, xK_f), withFocused float)
+                       , ((mod1Mask .|. shiftMask, xK_t), sinkAll)
                        , ((mod1Mask, xK_bracketleft), sendMessage $ Move L)
                        , ((mod1Mask, xK_bracketright), sendMessage $ Move R)
+                       , ((mod1Mask, xK_0), goToSelected defaultGSConfig)
+                       , ((mod1Mask .|. shiftMask, xK_0), gotoMenu)
                      ]
    `additionalKeysP` [
                        -- Move the focused window
