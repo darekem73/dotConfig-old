@@ -2,7 +2,7 @@ Config {  font = "xft:Monospace:pixelsize=11"
         -- , bgColor = "black"
         -- , fgColor = "grey"
         -- , position = TopW L 94
-        , lowerOnStart = False
+        , lowerOnStart = True
         , commands = [ 
             -- Run Network "wlan0" ["-t","<dev>: [<rx>/<tx>]"] 10
             Run Wireless "wlan0" ["-t", "<essid> <quality>", "-L", "30", "-H", "70",

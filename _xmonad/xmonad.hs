@@ -39,17 +39,22 @@ import           System.IO
 
 main = do
   statusBar <- spawnPipe "/usr/bin/xmobar /home/darek/.xmonad/xmobarrc"
-  xmonad $ def {
+  xmonad $ docks $ def {
     modMask = mod1Mask
     , borderWidth = 3
     , terminal = "terminator"
-    , manageHook = manageDocks <+> (scratchpadManageHook $ (W.RationalRect 0.2 0.2 0.6 0.5))
-                               <+> dynamicMasterHook <+> manageHook def
+    , manageHook = composeAll [
+               manageDocks
+               , scratchpadManageHook $ (W.RationalRect 0.2 0.2 0.6 0.5)
+               , dynamicMasterHook
+               , manageHook def
+               ]
     , layoutHook = avoidStruts $ 
                tall ||| wide ||| dock ||| full ||| three ||| grid ||| stab ||| acc ||| combo
-    , handleEventHook = mconcat
-                          [ docksEventHook
-                          , handleEventHook def ]
+    , handleEventHook = mconcat [
+                          docksEventHook
+                          , handleEventHook def 
+        		  ]
     , logHook = dynamicLogWithPP $ xmobarPP
                         { ppOutput = hPutStrLn statusBar
                         , ppTitle = xmobarColor "green" "" . shorten 50
@@ -73,6 +78,7 @@ main = do
                        , ((mod1Mask, xK_g), sendMessage (JumpToLayout "grid"))
                        , ((mod1Mask, xK_z), sendMessage MirrorShrink)
                        , ((mod1Mask, xK_a), sendMessage MirrorExpand)
+		       , ((mod1Mask, xK_b), sendMessage $ ToggleStruts)
                        , ((mod1Mask, xK_bracketleft), sendMessage $ Move L)
                        , ((mod1Mask, xK_bracketright), sendMessage $ Move R)
                      ]
