@@ -1,7 +1,7 @@
 Config {  
         -- font = "xft:Monospace:pixelsize=11"
         font = "xft:DejaVuSansMono:pixelsize=12"
-        -- , bgColor = "#111111"
+        , bgColor = "#101010"
         -- , fgColor = "grey"
         -- , position = TopW L 94
         , lowerOnStart = True
