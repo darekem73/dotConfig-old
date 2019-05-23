@@ -86,6 +86,7 @@ main = do
 		       , ((mod1Mask, xK_b), sendMessage $ ToggleStruts)
                        , ((mod1Mask .|. shiftMask, xK_f), withFocused float)
                        , ((mod1Mask .|. shiftMask, xK_t), sinkAll)
+                       -- moving windows between layouts in combo mode
                        , ((mod1Mask, xK_bracketleft), sendMessage $ Move L)
                        , ((mod1Mask, xK_bracketright), sendMessage $ Move R)
                        , ((mod1Mask, xK_0), goToSelected defaultGSConfig)

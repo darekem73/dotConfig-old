@@ -1,5 +1,7 @@
-Config {  font = "xft:Monospace:pixelsize=11"
-        -- , bgColor = "black"
+Config {  
+        -- font = "xft:Monospace:pixelsize=11"
+        font = "xft:DejaVuSansMono:pixelsize=12"
+        -- , bgColor = "#111111"
         -- , fgColor = "grey"
         -- , position = TopW L 94
         , lowerOnStart = True
@@ -25,7 +27,6 @@ Config {  font = "xft:Monospace:pixelsize=11"
                              , "--low"      , "darkred"
                              , "--normal"   , "darkorange"
                              , "--high"     , "darkgreen"
-
                              , "--" -- battery specific options
                                        -- discharging status
                                        , "-o"	, "<left>% (<timeleft>)"
@@ -33,7 +34,7 @@ Config {  font = "xft:Monospace:pixelsize=11"
                                        , "-O"	, "<fc=#dAA520>Charging</fc>"
                                        -- charged status
                                        , "-i"	, "<fc=#006000>Charged</fc>"
-                             ] 50
+                             ] 100
             -- , Run Volume "default" "Master" [] 10
             -- , Run Com "dcop" ["kxkb", "kxkb", "getCurrentLayout"] "kbd" 20
 	    , Run Com "gwaddress" [] "gw" 20
