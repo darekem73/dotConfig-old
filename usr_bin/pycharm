@@ -1,0 +1,5 @@
+#!/bin/bash
+wmname LG3D && \
+  PYCHARM_JDK=/usr/lib/jvm/java-6-openjdk-amd64 \
+  Downloads/pycharm-community-2019.1.2/bin/pycharm.sh
+
