@@ -71,7 +71,7 @@ main = do
           spawnOnce "compton &"
           spawnOnce "conky -d -c /usr/home/darek/.conkyrc-stat"
           spawnOnce "setxkbmap -option caps:escape"
-          spawnOnce "xautolock -time 10 -locker screenlock"
+          -- spawnOnce "xautolock -time 10 -locker screenlock"
           spawnOnce "xset r rate 200 40"
           -- spawnOnce "xfce4-power-manager &"
   } `additionalKeys` [
