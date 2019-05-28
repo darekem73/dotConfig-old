@@ -44,10 +44,10 @@ import           System.IO
 import           System.Exit
 import           Control.Monad
 
-confirm :: String -> X () -> X()
-confirm m f = do
-  result <- dmenu [m]
-  when (result == m) f
+dconfirm :: [String] -> [String] -> X () -> X()
+dconfirm args items action = do
+  result <- XMonad.Util.Dmenu.menuArgs "dmenu" args items
+  when (result == last items) action
 
 main = do
   statusBar <- spawnPipe "/usr/bin/xmobar /home/darek/.xmonad/xmobarrc"
@@ -117,7 +117,7 @@ main = do
 		       , ("M-i", setScreenWindowSpacing 3)
 		       , ("M-u", decWindowSpacing 3)
                        -- confirm quitting       
-		       , ("M-S-q", confirm "Exit?" (io exitSuccess))
+		       , ("M-S-q", dconfirm ["-p","Exit?"] ["No","Yes"] (io exitSuccess))
                      ]
 
 tall   = renamed [Replace "tall"] $ spacing 3 $ ResizableTall 1 (3/100) (1/2) []
