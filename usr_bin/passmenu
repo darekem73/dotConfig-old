@@ -1,0 +1,7 @@
+#!/bin/bash
+sel=`du -a ~/.password-store | grep "@" | sed 's/^.*store\///; s/.gpg//' | dmenu -l 10`
+if [[ $sel != "" ]]; then 
+	pass -c $sel
+else 
+	echo "Nothing selected"
+fi
