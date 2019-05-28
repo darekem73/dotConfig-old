@@ -1,4 +1,3 @@
---
 import           XMonad as X                         hiding ((|||))
 -- import qualified XMonad as X
 import           XMonad.Util.SpawnOnce
@@ -30,6 +29,7 @@ import           XMonad.Layout.Combo
 import           XMonad.Layout.WindowNavigation
 import           XMonad.Util.EZConfig
 import           XMonad.Util.Run
+import           XMonad.Util.Dmenu
 -- import           XMonad.Util.NamedWindows (getName)
 import           XMonad.Util.Scratchpad
 import           XMonad.Actions.CycleWS
@@ -41,6 +41,13 @@ import           XMonad.Actions.WithAll
 import           XMonad.Actions.FloatKeys
 import qualified XMonad.StackSet as W
 import           System.IO
+import           System.Exit
+import           Control.Monad
+
+confirm :: String -> X () -> X()
+confirm m f = do
+  result <- dmenu [m]
+  when (result == m) f
 
 main = do
   statusBar <- spawnPipe "/usr/bin/xmobar /home/darek/.xmonad/xmobarrc"
@@ -109,6 +116,8 @@ main = do
 		       , ("M-o", incWindowSpacing 3)
 		       , ("M-i", setScreenWindowSpacing 3)
 		       , ("M-u", decWindowSpacing 3)
+                       -- confirm quitting       
+		       , ("M-S-q", confirm "Exit?" (io exitSuccess))
                      ]
 
 tall   = renamed [Replace "tall"] $ spacing 3 $ ResizableTall 1 (3/100) (1/2) []
