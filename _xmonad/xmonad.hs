@@ -40,11 +40,17 @@ import           XMonad.Actions.GridSelect
 import           XMonad.Actions.WithAll
 import           XMonad.Actions.FloatKeys
 import qualified XMonad.StackSet as W
+-- import           XMonad.Operations
 import           System.IO
 import           System.Exit
 import           Control.Monad
 
-dconfirm :: [String] -> [String] -> X () -> X()
+dchoice :: [String] -> [String] -> [X()] -> X()
+dchoice args items actions = do
+  result <- XMonad.Util.Dmenu.menuArgs "dmenu" args items
+  -- when (result == last items) action
+  when (True) (snd $ head [ element | element <- zip items actions, fst element == result ])
+
 dconfirm args items action = do
   result <- XMonad.Util.Dmenu.menuArgs "dmenu" args items
   when (result == last items) action
@@ -117,7 +123,9 @@ main = do
 		       , ("M-i", setScreenWindowSpacing 3)
 		       , ("M-u", decWindowSpacing 3)
                        -- confirm quitting       
-		       , ("M-S-q", dconfirm ["-p","Exit?"] ["No","Yes"] (io exitSuccess))
+		       , ("M-S-q", dchoice ["-p","Exit?"] ["No","Yes","Shutdown"] [(spawn "")
+                                                                                , (io exitSuccess)
+                                                                                , (spawn "sudo -A shutdown now")])
                      ]
 
 tall   = renamed [Replace "tall"] $ spacing 3 $ ResizableTall 1 (3/100) (1/2) []
