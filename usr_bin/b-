@@ -1,5 +1,0 @@
-if [[ -n "$1" ]]; then
-	xbacklight -set $1
-else
-	xbacklight -dec 5
-fi
