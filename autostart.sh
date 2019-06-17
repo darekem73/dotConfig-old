@@ -11,7 +11,7 @@ conky -d -c ~/.conkyrc-stat
 compton &
 setxkbmap -option caps:escape
 xset r rate 200 40
-#slstatus &
-while true; do xsetroot -name "`date '+%Y-%m-%d %H:%M'1`"; sleep 10; done &
+slstatus &
+#while true; do xsetroot -name "`date '+%Y-%m-%d %H:%M'1`"; sleep 10; done &
 #synclient TapButton2=3 TapButton3=2
 #xautolock -time 10 -locker screenlock
