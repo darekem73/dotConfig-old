@@ -37,11 +37,12 @@ Config {
                              ] 100
             -- , Run Volume "default" "Master" [] 10
             -- , Run Com "dcop" ["kxkb", "kxkb", "getCurrentLayout"] "kbd" 20
+            , Run Com "/bin/bash" ["-c", "echo `xbacklight -get | grep -oE '^.[0-9]{0,3}'`%"] "mybright" 10
 	    , Run Com "gwaddress" [] "gw" 20
 	    , Run Com "netdiag.sh" [] "net" 20
         ]
         , sepChar = "%"
         , alignSep = "}{"
         -- , template = "<fc=#ff66ff>%date%</fc> %LGAV% } %StdinReader% { %wlan0% | %cpu% | %memory%" 
-	, template = "%StdinReader% }{ %wlan0wi% | %gw% | %net% | %cpu% | %memory% * %swap% | %disku% | %battery% | <fc=#ee9a00>%date%</fc>"
+	, template = "%StdinReader% }{ ☀ %mybright% | %wlan0wi% | %gw% | %net% | %cpu% | %memory% * %swap% | %disku% | %battery% | <fc=#ee9a00>%date%</fc>"
 }

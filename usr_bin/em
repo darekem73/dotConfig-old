@@ -1,1 +1,0 @@
-cat /usr/local/bin/utf8.csv | fzf | sed -n '1p' | awk -F, '{printf "%s", $2}' | xsel -b

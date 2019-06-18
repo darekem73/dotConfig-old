@@ -1,1 +1,2 @@
-st -e em
+#!/bin/bash
+cat /usr/local/bin/utf8.csv | dmenu -i -l 10 | sed -n '1p' | awk -F, '{printf "%s", $2}' | xsel -b

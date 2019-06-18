@@ -26,6 +26,7 @@ import           XMonad.Layout.ThreeColumns
 -- import           XMonad.Layout.ToggleLayouts     -- Full window at any time
 import           XMonad.Layout.Spacing           -- this makes smart space around windows
 import           XMonad.Layout.Combo
+import           XMonad.Layout.AutoMaster
 import           XMonad.Layout.WindowNavigation
 import           XMonad.Util.EZConfig
 import           XMonad.Util.Run
@@ -68,11 +69,11 @@ main = do
                , manageHook def
                ]
     , layoutHook = avoidStruts $ 
-               tall ||| wide ||| dock ||| full ||| three ||| grid ||| stab ||| acc ||| combo
+               tall ||| wide ||| dock ||| full ||| three ||| grid ||| stab ||| acc ||| combo ||| autom
     , handleEventHook = mconcat [
                           docksEventHook
                           , handleEventHook def 
-        		  ]
+                        ]
     , logHook = dynamicLogWithPP $ xmobarPP
                         { ppOutput = hPutStrLn statusBar
                         , ppTitle = xmobarColor "green" "" . shorten 50
@@ -84,7 +85,7 @@ main = do
           spawnOnce "setxkbmap -option caps:escape"
           spawnOnce "xautolock -time 10 -locker screenlock"
           spawnOnce "xset r rate 200 40"
-          spawnOnce "xfce4-power-manager &"
+	  -- spawnOnce "xfce4-power-manager &"
   } `additionalKeys` [
                          ((mod1Mask, xK_grave), scratchpadSpawnActionCustom "st -n scratchpad")
                        -- , ((mod1Mask .|. controlMask, xK_l), spawn "screenlock")
@@ -96,14 +97,18 @@ main = do
                        , ((mod1Mask, xK_g), sendMessage (JumpToLayout "grid"))
                        , ((mod1Mask, xK_z), sendMessage MirrorShrink)
                        , ((mod1Mask, xK_a), sendMessage MirrorExpand)
-		       , ((mod1Mask, xK_b), sendMessage $ ToggleStruts)
+                       , ((mod1Mask, xK_b), sendMessage $ ToggleStruts)
                        , ((mod1Mask .|. shiftMask, xK_f), withFocused float)
                        , ((mod1Mask .|. shiftMask, xK_t), sinkAll)
                        -- moving windows between layouts in combo mode
                        , ((mod1Mask, xK_bracketleft), sendMessage $ Move L)
                        , ((mod1Mask, xK_bracketright), sendMessage $ Move R)
-                       , ((mod1Mask, xK_0), goToSelected defaultGSConfig)
+                       , ((mod1Mask .|. shiftMask, xK_bracketleft), sendMessage $ IncMasterN 1)
+                       , ((mod1Mask .|. shiftMask, xK_bracketright), sendMessage $ IncMasterN (-1))
+                       , ((mod1Mask, xK_0), goToSelected def)
                        , ((mod1Mask .|. shiftMask, xK_0), gotoMenu)
+		       , ((mod1Mask, xK_equal), spawn "xbacklight -inc 10")
+		       , ((mod1Mask, xK_minus), spawn "xbacklight -dec 10")
                      ]
    `additionalKeysP` [
                        -- Move the focused window
@@ -119,11 +124,11 @@ main = do
                        -- Go to the next / previous workspace
                        , ("M-C-<R>", nextWS)
                        , ("M-C-<L>", prevWS)
-		       , ("M-o", incWindowSpacing 3)
-		       , ("M-i", setScreenWindowSpacing 3)
-		       , ("M-u", decWindowSpacing 3)
+                       , ("M-o", incWindowSpacing 3)
+                       , ("M-i", setScreenWindowSpacing 3)
+                       , ("M-u", decWindowSpacing 3)
                        -- confirm quitting       
-		       , ("M-S-q", dchoice ["-p","Exit?"] ["No","Yes","Shutdown"] [(spawn "")
+                       , ("M-S-q", dchoice ["-p","Exit?"] ["No","Yes","Shutdown"] [(spawn "")
                                                                                 , (io exitSuccess)
                                                                                 , (spawn "sudo -A shutdown now")])
                      ]
@@ -138,3 +143,4 @@ three  = renamed [Replace "three"] $ spacing 3 $ ThreeColMid 1 (3/100) (1/2)
 grid   = renamed [Replace "grid"] $ spacing 3 $ Grid
 dock   = renamed [Replace "dock"] $ spacing 3 $ TwoPane (3/100) (1/2)
 combo  = renamed [Replace "combo"] $ windowNavigation (combineTwo (TwoPane (3/100) (1/2)) (Accordion) (Accordion))
+autom  = renamed [Replace "autom"] $ spacing 3 $ Mirror $ autoMaster 1 (1/100) Grid
