@@ -1,6 +1,8 @@
 Config {  
         -- font = "xft:Monospace:pixelsize=11"
         font = "xft:DejaVuSansMono:pixelsize=12"
+        -- font = "xft:FreeMono:style=Bold:pixelsize=12"
+        -- font = "xft:FreeMono:style=Bold:size=10"
         , bgColor = "#101010"
         -- , fgColor = "grey"
         -- , position = TopW L 94
@@ -31,7 +33,7 @@ Config {
                                        -- discharging status
                                        , "-o"	, "<left>% (<timeleft>)"
                                        -- AC "on" status
-                                       , "-O"	, "<fc=#dAA520>Charging</fc>"
+                                       , "-O"	, "<fc=#dAA520>Charging</fc> (<timeleft>)"
                                        -- charged status
                                        , "-i"	, "<fc=#006000>Charged</fc>"
                              ] 100
