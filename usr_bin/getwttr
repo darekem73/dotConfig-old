@@ -4,11 +4,11 @@ if [[ -n "$1" ]]; then
 	case "$1"
 	in
 		"-k") 
-			kill `echo $(ps a | grep -e "conky -c .*-wttr" | grep -v grep) | cut -d\  -f1`
+			kill `ps -ef | grep conky.*wttr | grep -v grep | awk '{print $2}'`
 			exit 0
 			;;
 		"--kill") 
-			kill `echo $(ps a | grep -e "conky -c .*-wttr" | grep -v grep) | cut -d\  -f1`
+			kill `ps -ef | grep conky.*wttr | grep -v grep | awk '{print $2}'`
 			exit 0
 			;;
 		"-h") 
