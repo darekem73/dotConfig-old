@@ -89,7 +89,8 @@ main = do
   } `additionalKeys` [
                          ((mod1Mask, xK_grave), scratchpadSpawnActionCustom "st -n scratchpad")
                        -- , ((mod1Mask .|. controlMask, xK_l), spawn "screenlock")
-                       , ((mod1Mask .|. controlMask, xK_l), spawn "blurlock")
+                       -- , ((mod1Mask .|. controlMask, xK_l), spawn "blurlock")
+                       , ((mod1Mask .|. controlMask, xK_l), spawn "screenlock")
                        , ((mod1Mask, xK_n), sendMessage (JumpToLayout "accordion"))
                        , ((mod1Mask, xK_c), sendMessage (JumpToLayout "dock"))
                        , ((mod1Mask, xK_f), sendMessage (JumpToLayout "full"))
@@ -103,6 +104,7 @@ main = do
                        -- moving windows between layouts in combo mode
                        , ((mod1Mask, xK_bracketleft), sendMessage $ Move L)
                        , ((mod1Mask, xK_bracketright), sendMessage $ Move R)
+		       -- increase decrease number of windows in master area (same as mod+, mod+._)
                        , ((mod1Mask .|. shiftMask, xK_bracketleft), sendMessage $ IncMasterN 1)
                        , ((mod1Mask .|. shiftMask, xK_bracketright), sendMessage $ IncMasterN (-1))
                        , ((mod1Mask, xK_0), goToSelected def)
