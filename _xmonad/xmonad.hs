@@ -6,26 +6,28 @@ import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.DynamicHooks
 import           XMonad.Hooks.ManageHelpers
 import           XMonad.Layout.Accordion
-import           XMonad.Layout.DecorationMadness
+-- import           XMonad.Layout.DecorationMadness
 import           XMonad.Layout.Fullscreen
 import           XMonad.Layout.Grid
 import           XMonad.Layout.LayoutCombinators
 import           XMonad.Layout.NoBorders
 import           XMonad.Layout.PerWorkspace
 import           XMonad.Layout.Renamed
-import           XMonad.Layout.Tabbed
+-- import           XMonad.Layout.Tabbed
 import           XMonad.Layout.Grid
 import           XMonad.Layout.TwoPane
 -- import           XMonad.Layout.StackTile
 -- import           XMonad.Layout.Gaps
 import           XMonad.Layout.ResizableTile     -- Resizable Horizontal border
 import           XMonad.Layout.ThreeColumns
+-- import           XMonad.Layout.Dishes
+import           XMonad.Layout.StackTile
 -- import           XMonad.Layout.Simplest
 -- import           XMonad.Layout.SimplestFloat
 -- import           XMonad.Layout.SimpleFloat       -- simpleFloat, floating layout
 -- import           XMonad.Layout.ToggleLayouts     -- Full window at any time
 import           XMonad.Layout.Spacing           -- this makes smart space around windows
-import           XMonad.Layout.Combo
+-- import           XMonad.Layout.Combo
 import           XMonad.Layout.AutoMaster
 import           XMonad.Layout.WindowNavigation
 import           XMonad.Util.EZConfig
@@ -69,7 +71,7 @@ main = do
                , manageHook def
                ]
     , layoutHook = avoidStruts $ 
-               tall ||| wide ||| dock ||| full ||| three ||| grid ||| stab ||| acc ||| combo ||| autom
+               tall ||| wide ||| dock ||| full ||| three ||| grid ||| acc ||| stack ||| autom
     , handleEventHook = mconcat [
                           docksEventHook
                           , handleEventHook def 
@@ -94,6 +96,7 @@ main = do
                        , ((mod1Mask, xK_n), sendMessage (JumpToLayout "accordion"))
                        , ((mod1Mask, xK_c), sendMessage (JumpToLayout "dock"))
                        , ((mod1Mask, xK_f), sendMessage (JumpToLayout "full"))
+                       , ((mod1Mask, xK_s), sendMessage (JumpToLayout "stack"))
                        , ((mod1Mask, xK_d), sendMessage (JumpToLayout "wide"))
                        , ((mod1Mask, xK_g), sendMessage (JumpToLayout "grid"))
                        , ((mod1Mask, xK_z), sendMessage MirrorShrink)
@@ -102,8 +105,8 @@ main = do
                        , ((mod1Mask .|. shiftMask, xK_f), withFocused float)
                        , ((mod1Mask .|. shiftMask, xK_t), sinkAll)
                        -- moving windows between layouts in combo mode
-                       , ((mod1Mask, xK_bracketleft), sendMessage $ Move L)
-                       , ((mod1Mask, xK_bracketright), sendMessage $ Move R)
+                       -- , ((mod1Mask, xK_bracketleft), sendMessage $ Move L)
+                       -- , ((mod1Mask, xK_bracketright), sendMessage $ Move R)
 		       -- increase decrease number of windows in master area (same as mod+, mod+._)
                        , ((mod1Mask .|. shiftMask, xK_bracketleft), sendMessage $ IncMasterN 1)
                        , ((mod1Mask .|. shiftMask, xK_bracketright), sendMessage $ IncMasterN (-1))
@@ -137,12 +140,14 @@ main = do
 
 tall   = renamed [Replace "tall"] $ spacing 3 $ ResizableTall 1 (3/100) (1/2) []
 wide   = renamed [Replace "wide"] $ Mirror $ tall
-full   = renamed [Replace "full"] $ spacing 3 $ Full
-circle = renamed [Replace "circle"] $ circleSimpleDefaultResizable
-stab   = renamed [Replace "tabbed"] $ simpleTabbed
+-- dish   = renamed [Replace "dish"] $ spacing 3 $ Dishes 2 (1/8)
+stack  = renamed [Replace "stack"] $ spacing 3 $ StackTile 1 (3/100) (1/2)
+full   = renamed [Replace "full"] $ noBorders $ Full
+-- circle = renamed [Replace "circle"] $ circleSimpleDefaultResizable
+-- stab   = renamed [Replace "tabbed"] $ simpleTabbed
 acc    = renamed [Replace "accordion"] $ spacing 3 $ Accordion
 three  = renamed [Replace "three"] $ spacing 3 $ ThreeColMid 1 (3/100) (1/2)
 grid   = renamed [Replace "grid"] $ spacing 3 $ Grid
 dock   = renamed [Replace "dock"] $ spacing 3 $ TwoPane (3/100) (1/2)
-combo  = renamed [Replace "combo"] $ windowNavigation (combineTwo (TwoPane (3/100) (1/2)) (Accordion) (Accordion))
+-- combo  = renamed [Replace "combo"] $ windowNavigation (combineTwo (TwoPane (3/100) (1/2)) (Accordion) (Accordion))
 autom  = renamed [Replace "autom"] $ spacing 3 $ Mirror $ autoMaster 1 (1/100) Grid
