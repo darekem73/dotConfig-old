@@ -11,4 +11,4 @@ RAM:$memperc% | CPU:${cpu}% | \
 ${if_up tun1}tun1: ${downspeedf tun1} kB/s down ${upspeedf tun1} kB/s up |${endif} \
 ${if_up eth0}eth0: ${downspeedf eth0} kB/s down ${upspeedf eth0} kB/s up |${endif} \
 ${if_up wlan0}wlan0: ${downspeedf wlan0} kB/s down ${upspeedf wlan0} kB/s up |${endif} \
-${time %Y-%M-%d %l:%m}
+${time %a %Y-%m-%d %H:%M}
