@@ -112,6 +112,7 @@ main = do
                        , ((mod1Mask .|. shiftMask, xK_bracketright), sendMessage $ IncMasterN (-1))
                        , ((mod1Mask, xK_0), goToSelected def)
                        , ((mod1Mask .|. shiftMask, xK_0), gotoMenu)
+		       , ((mod1Mask .|. shiftMask, xK_p), spawn "rofi -show drun -font 'Monospace 9'")
 		       , ((mod1Mask, xK_equal), spawn "xbacklight -inc 10")
 		       , ((mod1Mask, xK_minus), spawn "xbacklight -dec 10")
                      ]
