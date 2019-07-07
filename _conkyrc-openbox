@@ -6,8 +6,9 @@ conky.config = {
 	use_spacer = none,
 }
 
+-- ${exec /usr/local/bin/statusbar.sh} \
+
 conky.text = [[
-${exec /usr/local/bin/statusbar.sh} \
 %{r}\
 RAM:$mem | CPU:$cpu% | HDD:${fs_free /}/${fs_size /} | \
 ${if_up tun1}tun1: ${downspeedf tun1} kB/s down ${upspeedf tun1} kB/s up |${endif} \
