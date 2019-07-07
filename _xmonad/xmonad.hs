@@ -62,7 +62,7 @@ main = do
   statusBar <- spawnPipe "/usr/bin/xmobar /home/darek/.xmonad/xmobarrc"
   xmonad $ docks $ def {
     modMask = mod1Mask
-    , borderWidth = 3
+    , borderWidth = 2
     , terminal = "terminator"
     , manageHook = composeAll [
                manageDocks
