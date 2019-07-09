@@ -63,7 +63,8 @@ main = do
   xmonad $ docks $ def {
     modMask = mod1Mask
     , borderWidth = 2
-    , terminal = "terminator"
+    -- , terminal = "terminator"
+    , terminal = "st"
     , manageHook = composeAll [
                manageDocks
                , scratchpadManageHook $ (W.RationalRect 0.2 0.2 0.6 0.5)
