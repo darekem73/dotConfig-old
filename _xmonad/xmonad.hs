@@ -33,7 +33,7 @@ import           XMonad.Layout.WindowNavigation
 import           XMonad.Util.EZConfig
 import           XMonad.Util.Run
 import           XMonad.Util.Dmenu
--- import           XMonad.Util.NamedWindows (getName)
+import           XMonad.Util.NamedWindows (getName)
 import           XMonad.Util.Scratchpad
 import           XMonad.Actions.CycleWS
 import           XMonad.Actions.WindowBringer
@@ -47,6 +47,7 @@ import qualified XMonad.StackSet as W
 import           System.IO
 import           System.Exit
 import           Control.Monad
+-- import           Data.List
 
 dchoice :: [String] -> [String] -> [X()] -> X()
 dchoice args items actions = do
@@ -63,8 +64,7 @@ main = do
   xmonad $ docks $ def {
     modMask = mod1Mask
     , borderWidth = 2
-    -- , terminal = "terminator"
-    , terminal = "st"
+    , terminal = "terminator"
     , manageHook = composeAll [
                manageDocks
                , scratchpadManageHook $ (W.RationalRect 0.2 0.2 0.6 0.5)
@@ -88,7 +88,7 @@ main = do
           spawnOnce "setxkbmap -option caps:escape"
           spawnOnce "xautolock -time 10 -locker screenlock"
           spawnOnce "xset r rate 200 40"
-	  -- spawnOnce "xfce4-power-manager &"
+          -- spawnOnce "xfce4-power-manager &"
   } `additionalKeys` [
                          ((mod1Mask, xK_grave), scratchpadSpawnActionCustom "st -n scratchpad")
                        -- , ((mod1Mask .|. controlMask, xK_l), spawn "screenlock")
@@ -108,14 +108,25 @@ main = do
                        -- moving windows between layouts in combo mode
                        -- , ((mod1Mask, xK_bracketleft), sendMessage $ Move L)
                        -- , ((mod1Mask, xK_bracketright), sendMessage $ Move R)
-		       -- increase decrease number of windows in master area (same as mod+, mod+._)
+                       -- increase decrease number of windows in master area (same as mod+, mod+._)
                        , ((mod1Mask .|. shiftMask, xK_bracketleft), sendMessage $ IncMasterN 1)
                        , ((mod1Mask .|. shiftMask, xK_bracketright), sendMessage $ IncMasterN (-1))
-                       , ((mod1Mask, xK_0), goToSelected def)
-                       , ((mod1Mask .|. shiftMask, xK_0), gotoMenu)
-		       , ((mod1Mask .|. shiftMask, xK_p), spawn "rofi -show drun -font 'Monospace 9'")
-		       , ((mod1Mask, xK_equal), spawn "xbacklight -inc 10")
-		       , ((mod1Mask, xK_minus), spawn "xbacklight -dec 10")
+                       -- , ((mod1Mask, xK_0), goToSelected def)
+                       -- , ((mod1Mask .|. shiftMask, xK_0), gotoMenu)
+                       , ((mod1Mask, xK_0), gotoMenuConfig WindowBringerConfig { menuCommand = "dmenu"
+                                                                  , XMonad.Actions.WindowBringer.menuArgs = ["-i","-l","10"]
+                                                                  , windowTitler = decorateName
+                                                                  })
+                       , ((mod1Mask .|. shiftMask, xK_p), spawn "rofi -show drun -font 'Monospace 9' -theme solarized")
+                       , ((mod1Mask, xK_equal), spawn "xbacklight -inc 10")
+                       , ((mod1Mask, xK_minus), spawn "xbacklight -dec 10")
+                       , ((mod1Mask .|. shiftMask, xK_equal), spawn "amixer -D pulse sset Master 10%+")
+                       , ((mod1Mask .|. shiftMask, xK_minus), spawn "amixer -D pulse sset Master 10%-")
+                       -- recompiling (possibly generate help here)
+                       , ((mod1Mask, xK_q), spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi") -- %! Restart xmonad
+                       , ((mod1Mask .|. shiftMask, xK_slash), helpCommand) -- %! Run xmessage with a summary of the default keybindings (useful for beginners)
+                       -- repeat the binding for non-American layout keyboards
+                       , ((mod1Mask, xK_question), helpCommand) -- %! Run xmessage with a summary of the default keybindings (useful for beginners)
                      ]
    `additionalKeysP` [
                        -- Move the focused window
@@ -139,6 +150,14 @@ main = do
                                                                                 , (io exitSuccess)
                                                                                 , (spawn "sudo -A shutdown now")])
                      ]
+     where 
+       helpCommand :: X ()
+       helpCommand = spawn ("echo " ++ show help ++ " | xmessage -file -")
+       decorateName :: X.WindowSpace -> Window -> X String
+       decorateName ws w = do
+               name <- show <$> getName w
+               -- return $ name ++ " [" ++ W.tag ws ++ "]"
+               return $ "[" ++ W.tag ws ++ "] " ++ name
 
 tall   = renamed [Replace "tall"] $ spacing 3 $ ResizableTall 1 (3/100) (1/2) []
 wide   = renamed [Replace "wide"] $ Mirror $ tall
@@ -153,3 +172,55 @@ grid   = renamed [Replace "grid"] $ spacing 3 $ Grid
 dock   = renamed [Replace "dock"] $ spacing 3 $ TwoPane (3/100) (1/2)
 -- combo  = renamed [Replace "combo"] $ windowNavigation (combineTwo (TwoPane (3/100) (1/2)) (Accordion) (Accordion))
 autom  = renamed [Replace "autom"] $ spacing 3 $ Mirror $ autoMaster 1 (1/100) Grid
+
+help :: String
+help = unlines ["The default modifier key is 'alt'. Default keybindings:",
+    "",
+    "-- launching and killing programs",
+    "mod-Shift-Enter  Launch xterminal",
+    "mod-p            Launch dmenu",
+    "mod-Shift-p      Launch gmrun",
+    "mod-Shift-c      Close/kill the focused window",
+    "mod-Space        Rotate through the available layout algorithms",
+    "mod-Shift-Space  Reset the layouts on the current workSpace to default",
+    "mod-n            Resize/refresh viewed windows to the correct size",
+    "",
+    "-- move focus up or down the window stack",
+    "mod-Tab        Move focus to the next window",
+    "mod-Shift-Tab  Move focus to the previous window",
+    "mod-j          Move focus to the next window",
+    "mod-k          Move focus to the previous window",
+    "mod-m          Move focus to the master window",
+    "",
+    "-- modifying the window order",
+    "mod-Return   Swap the focused window and the master window",
+    "mod-Shift-j  Swap the focused window with the next window",
+    "mod-Shift-k  Swap the focused window with the previous window",
+    "",
+    "-- resizing the master/slave ratio",
+    "mod-h  Shrink the master area",
+    "mod-l  Expand the master area",
+    "",
+    "-- floating layer support",
+    "mod-t  Push window back into tiling; unfloat and re-tile it",
+    "",
+    "-- increase or decrease number of windows in the master area",
+    "mod-comma  (mod-,)   Increment the number of windows in the master area",
+    "mod-period (mod-.)   Deincrement the number of windows in the master area",
+    "",
+    "-- quit, or restart",
+    "mod-Shift-q  Quit xmonad",
+    "mod-q        Restart xmonad",
+    "",
+    "-- Workspaces & screens",
+    "mod-[1..9]         Switch to workSpace N",
+    "mod-Shift-[1..9]   Move client to workspace N",
+    "mod-{w,e,r}        Switch to physical/Xinerama screens 1, 2, or 3",
+    "mod-Shift-{w,e,r}  Move client to screen 1, 2, or 3",
+    "",
+    "-- Mouse bindings: default actions bound to mouse events",
+    "mod-button1  Set the window to floating mode and move by dragging",
+    "mod-button2  Raise the window to the top of the stack",
+    "mod-button3  Set the window to floating mode and resize by dragging",
+    "",
+    "EOF"]
