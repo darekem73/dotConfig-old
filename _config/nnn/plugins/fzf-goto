@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+# Description: Fuzzy find a file in directory subtree with fzy and goto the location
+#
+# Shell: POSIX compliant
+# Author: Dariusz Mastalerz
+
+cd "$(du -a 2>/dev/null | fzf | cut -d\  -f2 | awk -F/ 'BEGIN{OFS="/"}; {NF--; printf $0}')" >/dev/null 2>&1
