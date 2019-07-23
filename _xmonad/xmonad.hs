@@ -130,7 +130,7 @@ main = do
                        , ("M-i", setScreenWindowSpacing 3)
                        , ("M-u", decWindowSpacing 3)
                        -- confirm quitting       
-                       , ("M-S-q", dchoice ["-l","3","-p","Exit?"] ["No","Yes","Shutdown"] [(spawn "")
+                       , ("M-S-q", dchoice ["-p","Exit?"] ["No","Yes","Shutdown"] [(spawn "")
                                                                                 , (io exitSuccess)
                                                                                 , (spawn "sudo -A shutdown now")])
                      ]
