@@ -101,6 +101,7 @@ main = do
                                                                   , XMonad.Actions.WindowBringer.menuArgs = ["-i","-l","10"]
                                                                   , windowTitler = decorateName
                                                                   })
+                       , ((mod1Mask, xK_p), spawn "dmenu_run -i") -- %! Launch dmenu
                        , ((mod1Mask .|. shiftMask, xK_p), spawn "rofi -show drun -font 'Monospace 9' -theme solarized")
                        , ((mod1Mask, xK_equal), spawn "xbacklight -inc 10")
                        , ((mod1Mask, xK_minus), spawn "xbacklight -dec 10")
