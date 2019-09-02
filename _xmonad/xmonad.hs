@@ -77,7 +77,7 @@ main = do
           spawnOnce "xautolock -time 10 -locker screenlock"
           spawnOnce "xset r rate 200 40"
   } `additionalKeys` [
-                         ((mod1Mask, xK_grave), scratchpadSpawnActionCustom "st -n scratchpad")
+                         ((mod1Mask, xK_grave), scratchpadSpawnActionCustom "st -n scratchpad -e tmux")
                        , ((mod1Mask .|. controlMask, xK_l), spawn "screenlock")
                        , ((mod1Mask, xK_n), sendMessage (JumpToLayout "accordion"))
                        , ((mod1Mask, xK_c), sendMessage (JumpToLayout "dock"))
