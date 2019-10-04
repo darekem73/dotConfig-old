@@ -141,7 +141,8 @@ main = do
        decorateName :: X.WindowSpace -> Window -> X String
        decorateName ws w = do
                name <- show <$> getName w
-               return $ "[" ++ W.tag ws ++ "] " ++ name
+	       current <- show <$> withWindowSet (pure . W.currentTag)
+               return $ (if (read $ current) == W.tag ws then "*" else "") ++ "[" ++ W.tag ws ++ "] " ++ name
 
 tall   = renamed [Replace "tall"] $ spacing 3 $ ResizableTall 1 (3/100) (1/2) []
 wide   = renamed [Replace "wide"] $ Mirror $ tall
