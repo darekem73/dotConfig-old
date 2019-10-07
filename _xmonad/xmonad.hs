@@ -21,6 +21,7 @@ import           XMonad.Layout.MultiToggle
 import           XMonad.Layout.Spacing           -- this makes smart space around windows
 import           XMonad.Layout.AutoMaster
 import           XMonad.Layout.WindowNavigation
+import           XMonad.Layout.SimplestFloat
 import           XMonad.Util.EZConfig
 import           XMonad.Util.Run
 import           XMonad.Util.Dmenu
@@ -60,7 +61,7 @@ main = do
     , layoutHook = mkToggle (single REFLECTX) $
                    -- mkToggle (single REFLECTY) $
                    avoidStruts $ 
-                   tall ||| wide ||| dock ||| full ||| three ||| grid ||| acc ||| stack ||| autom
+                   tall ||| wide ||| dock ||| full ||| three ||| grid ||| acc ||| stack ||| autom ||| flt 
     , handleEventHook = mconcat [
                           docksEventHook
                           , handleEventHook def 
@@ -85,6 +86,7 @@ main = do
                        , ((mod1Mask, xK_s), sendMessage (JumpToLayout "stack"))
                        , ((mod1Mask, xK_d), sendMessage (JumpToLayout "wide"))
                        , ((mod1Mask, xK_g), sendMessage (JumpToLayout "grid"))
+                       , ((mod1Mask, xK_t), sendMessage (JumpToLayout "float"))
                        , ((mod1Mask, xK_z), sendMessage MirrorShrink)
                        , ((mod1Mask, xK_a), sendMessage MirrorExpand)
                        , ((mod1Mask, xK_b), sendMessage $ ToggleStruts)
@@ -153,7 +155,8 @@ three  = renamed [Replace "three"] $ spacing 3 $ ThreeColMid 1 (3/100) (1/2)
 grid   = renamed [Replace "grid"] $ spacing 3 $ Grid
 dock   = renamed [Replace "dock"] $ spacing 3 $ TwoPane (3/100) (1/2)
 autom  = renamed [Replace "autom"] $ spacing 3 $ Mirror $ autoMaster 1 (1/100) Grid
-
+flt    = renamed [Replace "float"] $ simplestFloat 
+ 
 help :: String
 help = unlines ["The default modifier key is 'alt'. Default keybindings:",
     "",
