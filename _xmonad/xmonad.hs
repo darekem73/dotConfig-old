@@ -59,7 +59,7 @@ main = do
                , manageHook def
                ]
     , layoutHook = mkToggle (single REFLECTX) $
-                   -- mkToggle (single REFLECTY) $
+                   mkToggle (single REFLECTY) $
                    avoidStruts $ 
                    tall ||| wide ||| dock ||| full ||| three ||| grid ||| acc ||| stack ||| autom ||| flt 
     , handleEventHook = mconcat [
@@ -92,7 +92,7 @@ main = do
                        , ((mod1Mask, xK_b), sendMessage $ ToggleStruts)
                        -- mirror layout like spectrwm       
                        , ((mod1Mask .|. shiftMask, xK_backslash), sendMessage $ Toggle REFLECTX)
-                       -- , ((mod1Mask .|. shiftMask, xK_backslash), sendMessage $ Toggle REFLECTY)
+                       , ((mod1Mask, xK_backslash), sendMessage $ Toggle REFLECTY)
                        -- float window
                        , ((mod1Mask .|. shiftMask, xK_f), withFocused float)
                        -- unfloat all windows
