@@ -12,12 +12,13 @@ hc emit_hook reload
 nitrogen --restore
 pkill conky
 conky -d -c .conkyrc-stat
-mopidy &
-nm-applet &
-system-config-printer-appler &
-blueman-applet &
+#mopidy &
+#nm-applet &
+#system-config-printer-appler &
+#blueman-applet &
 #compton &
 setxkbmap -option caps:escape
+xset r rate 200 40
 
 # remove all existing keybindings
 hc keyunbind --all
@@ -26,18 +27,19 @@ hc set focus_follows_mouse 1
 
 # keybindings
 # if you have a super key you will be much happier with Mod set to Mod4
-#Mod=Mod1    # Use alt as the main modifier
-Mod=Mod4   # Use the super key as the main modifier
+Mod=Mod1    # Use alt as the main modifier
+#Mod=Mod4   # Use the super key as the main modifier
 
-hc keybind $Mod-Shift-p quit
-hc keybind $Mod-Shift-r reload
-hc keybind $Mod-Shift-q close
-hc keybind $Mod-Return spawn tilix # use your $TERMINAL with xterm as fallback
-hc keybind $Mod-Shift-Return spawn terminator # use your $TERMINAL with xterm as fallback
-hc keybind $Mod-d spawn rofi -show run -font "Monospace 10" -fake-transparency
-hc keybind $Mod-Shift-d spawn rofi -show drun -font "Monospace 10" -fake-transparency
-hc keybind $Mod-m spawn xterm -title "alsamixer" -e alsamixer
-hc keybind $Mod-p spawn xterm -title "player" -e ncmpcpp
+hc keybind $Mod-Shift-q quit
+hc keybind $Mod-q reload
+hc keybind $Mod-Shift-c close
+#hc keybind $Mod-Return spawn tilix # use your $TERMINAL with xterm as fallback
+hc keybind $Mod-Shift-Return spawn st # use your $TERMINAL with xterm as fallback
+hc keybind $Mod-p spawn rofi -show run -font "Monospace 10" -fake-transparency
+hc keybind $Mod-Shift-p spawn rofi -show drun -font "Monospace 10" -fake-transparency
+#hc keybind $Mod-m spawn xterm -title "alsamixer" -e alsamixer
+#hc keybind $Mod-p spawn xterm -title "player" -e ncmpcpp
+hc keybind $Mod-Control-l spawn screenlock
 
 # basic movement
 # focusing clients
@@ -48,7 +50,7 @@ hc keybind $Mod-Right focus right
 hc keybind $Mod-h     focus left
 hc keybind $Mod-j     focus down
 hc keybind $Mod-k     focus up
-hc keybind $Mod-l     spawn blurlock
+hc keybind $Mod-l     focus right
 
 # moving clients
 hc keybind $Mod-Shift-Left  shift left
@@ -62,8 +64,8 @@ hc keybind $Mod-Shift-l     shift right
 
 # splitting frames
 # create an empty frame at the specified direction
-hc keybind $Mod-v       split   bottom  0.5
-hc keybind $Mod-h       split   right   0.5
+hc keybind $Mod-u       split   bottom  0.5
+hc keybind $Mod-o       split   right   0.5
 # let the current frame explode into subframes
 hc keybind $Mod-Control-space split explode
 
@@ -95,16 +97,15 @@ done
 # cycle through tags
 hc keybind $Mod-period use_index +1 --skip-visible
 hc keybind $Mod-comma  use_index -1 --skip-visible
-hc keybind $Mod-Control-Left  use_index -1 --skip-visible
-hc keybind $Mod-Control-Right  use_index +1 --skip-visible
-
+#hc keybind $Mod-Control-Left  use_index -1 --skip-visible
+#hc keybind $Mod-Control-Right  use_index +1 --skip-visible
 
 # Sreen brightness controls
-hc keybind XF86MonBrightnessUp spawn xbacklight -inc 5 # increase screen brightness
-hc keybind XF86MonBrightnessDown spawn xbacklight -dec 5 # decrease screen brightness
+#hc keybind XF86MonBrightnessUp spawn xbacklight -inc 5 # increase screen brightness
+#hc keybind XF86MonBrightnessDown spawn xbacklight -dec 5 # decrease screen brightness
 
 # Touchpad controls
-hc keybind XF86TouchpadToggle spawn /usr/bin/toggletouchpad.sh # toggle touchpad
+#hc keybind XF86TouchpadToggle spawn /usr/bin/toggletouchpad.sh # toggle touchpad
 
 # layouting
 hc keybind $Mod-r remove
