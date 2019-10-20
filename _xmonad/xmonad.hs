@@ -76,6 +76,7 @@ main = do
           spawnOnce "conky -d -c /home/darek/.conkyrc-stat"
           spawnOnce "setxkbmap -option caps:escape"
           spawnOnce "xautolock -time 10 -locker screenlock"
+          spawnOnce "synclient TapButton2=3 TapButton1=1"
           spawnOnce "xset r rate 200 40"
   } `additionalKeys` [
                          ((mod1Mask, xK_grave), scratchpadSpawnActionCustom "st -n scratchpad -e tmux")
