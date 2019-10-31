@@ -1,6 +1,18 @@
 #!/bin/bash
 EXTERNAL_OUTPUT="HDMI1"
 INTERNAL_OUTPUT="eDP1"
+# if we have argument on command line - execute
+if [[ $# -eq 1 ]]; then
+	if [[ "$1" == "extend" ]]; then
+		xrandr --output $INTERNAL_OUTPUT --auto --output $EXTERNAL_OUTPUT --auto --right-of $INTERNAL_OUTPUT
+	elif [[ "$1" == "single" ]]; then
+        	xrandr --output $INTERNAL_OUTPUT --auto --output $EXTERNAL_OUTPUT --off
+	elif [[ "$1" == "same" ]]; then
+		xrandr --output $INTERNAL_OUTPUT --auto --output $EXTERNAL_OUTPUT --auto --same-as $INTERNAL_OUTPUT
+	fi
+	exit 0
+fi
+
 
 # if we don't have a file, start at zero
 if [ ! -f "/tmp/monitor_mode.dat" ] ; then

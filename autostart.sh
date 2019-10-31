@@ -1,13 +1,21 @@
 nitrogen --restore &
-randwp.sh &
 conky -d -c ~/.conkyrc-stat
 #nm-applet &
 #blueman-applet &
+#pamac-tray &
 #system-config-printer-applet &
+#volumeicon &
+xfce4-power-manager &
 #unclutter -idle 1 -root &
 #mopidy &
 compton &
 setxkbmap -option caps:escape
+xset r rate 200 40
 slstatus &
-synclient TapButton2=3 TapButton3=2
-xset r rate 220 40
+synclient TapButton1=1 TapButton2=3 TapButton3=2
+xautolock -time 10 -locker screenlock
+if [[ `xrandr | egrep connected | grep -v dis | wc -l` -eq 2 ]]; then 
+	monitor extend
+else
+	monitor single
+fi
