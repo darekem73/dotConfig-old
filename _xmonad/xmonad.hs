@@ -4,6 +4,7 @@ import           XMonad.Hooks.ManageDocks
 import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.DynamicHooks
 import           XMonad.Hooks.ManageHelpers
+import           XMonad.Hooks.DynamicBars
 import           XMonad.Layout.Accordion
 import           XMonad.Layout.Fullscreen
 import           XMonad.Layout.Grid
@@ -46,8 +47,14 @@ dconfirm args items action = do
   result <- XMonad.Util.Dmenu.menuArgs "dmenu" args items
   when (result == last items) action
 
+barCreator :: DynamicStatusBar
+barCreator (X.S sid) = spawnPipe $ "/usr/bin/xmobar --screen " ++ show sid ++ " /home/darek/.xmonad/xmobarrc"
+
+barDestroyer :: DynamicStatusBarCleanup
+barDestroyer = return ()
+
 main = do
-  statusBar <- spawnPipe "/usr/bin/xmobar /home/darek/.xmonad/xmobarrc"
+  -- statusBar <- spawnPipe "/usr/bin/xmobar /home/darek/.xmonad/xmobarrc"
   xmonad $ docks $ def {
     modMask = mod1Mask
     , borderWidth = 2
@@ -64,12 +71,17 @@ main = do
                    tall ||| wide ||| dock ||| full ||| three ||| grid ||| acc ||| stack ||| autom ||| flt 
     , handleEventHook = mconcat [
                           docksEventHook
-                          , handleEventHook def 
+                          , handleEventHook def
+                          , dynStatusBarEventHook barCreator barDestroyer 
                         ]
-    , logHook = dynamicLogWithPP $ xmobarPP
-                        { ppOutput = hPutStrLn statusBar
-                        , ppTitle = xmobarColor "green" "" . shorten 50
-                        }
+    , logHook = multiPP (defaultPP
+                           { ppCurrent = xmobarColor "green" "" . pad
+                           , ppTitle = xmobarColor "green" "" . shorten 50
+			   }) (defaultPP)
+--    , logHook = dynamicLogWithPP $ xmobarPP
+--                        { ppOutput = hPutStrLn statusBar
+--                        , ppTitle = xmobarColor "green" "" . shorten 50
+--                        }
     , startupHook = do
           spawnOnce "nitrogen --restore"
           spawnOnce "compton &"
@@ -78,6 +90,7 @@ main = do
           spawnOnce "xautolock -time 10 -locker screenlock"
           spawnOnce "synclient TapButton2=3 TapButton1=1"
           spawnOnce "xset r rate 200 40"
+          dynStatusBarStartup barCreator barDestroyer
   } `additionalKeys` [
                          ((mod1Mask, xK_grave), scratchpadSpawnActionCustom "st -n scratchpad -e tmux")
                        , ((mod1Mask .|. controlMask, xK_l), spawn "screenlock")
