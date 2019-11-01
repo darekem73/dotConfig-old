@@ -94,6 +94,8 @@ main = do
   } `additionalKeys` [
                          ((mod1Mask, xK_grave), scratchpadSpawnActionCustom "st -n scratchpad -e tmux")
                        , ((mod1Mask .|. controlMask, xK_l), spawn "screenlock")
+                       , ((mod4Mask .|. shiftMask, xK_Return), spawn "st")
+                       , ((mod4Mask, xK_Return), spawn "st")
                        , ((mod1Mask, xK_n), sendMessage (JumpToLayout "accordion"))
                        , ((mod1Mask, xK_c), sendMessage (JumpToLayout "dock"))
                        , ((mod1Mask, xK_f), sendMessage (JumpToLayout "full"))
