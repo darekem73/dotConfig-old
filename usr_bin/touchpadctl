@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [[ -z "$1 ]]; then
+	echo "Usage $0 <on|off>
+	exit
+fi
+
+if [[ "$1" == "on" ]]; then
+	synclient TouchpadOff=0
+elif [[ "$1" == "off" ]]; then
+	synclient TouchpadOff=1
+fi
+
+#synclient PalmDetect=1 PalmMinWidth=4 PalmMinZ=50
