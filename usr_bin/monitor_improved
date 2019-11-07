@@ -1,7 +1,7 @@
 #!/bin/bash
 
-EXTERNAL=`xrandr | grep " connected" | awk '/HDMI/ {print $1}'`
-INTERNAL=`xrandr | grep " connected" | awk '/DP/ {print $1}'`
+EXTERNAL=`xrandr | grep " connected" | awk '/^HDMI|^DP/ {print $1}'`
+INTERNAL=`xrandr | grep " connected" | awk '/^eDP/ {print $1}'`
 
 case "$1" in
 	"same") COMMAND="--same-as"
