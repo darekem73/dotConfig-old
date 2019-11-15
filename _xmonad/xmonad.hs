@@ -23,6 +23,7 @@ import           XMonad.Layout.Spacing           -- this makes smart space aroun
 import           XMonad.Layout.AutoMaster
 import           XMonad.Layout.WindowNavigation
 import           XMonad.Layout.SimplestFloat
+import           XMonad.Layout.Maximize
 import           XMonad.Util.EZConfig
 import           XMonad.Util.Run
 import           XMonad.Util.Dmenu
@@ -68,7 +69,7 @@ main = do
     , layoutHook = mkToggle (single REFLECTX) $
                    mkToggle (single REFLECTY) $
                    avoidStruts $ 
-                   tall ||| wide ||| dock ||| full ||| three ||| grid ||| acc ||| stack ||| autom ||| flt 
+                   maximize (tall ||| wide ||| dock ||| full ||| three ||| grid ||| acc ||| stack ||| autom ||| flt)
     , handleEventHook = mconcat [
                           docksEventHook
                           , handleEventHook def
@@ -106,6 +107,7 @@ main = do
                        , ((mod1Mask, xK_z), sendMessage MirrorShrink)
                        , ((mod1Mask, xK_a), sendMessage MirrorExpand)
                        , ((mod1Mask, xK_b), sendMessage $ ToggleStruts)
+                       , ((mod1Mask, xK_m), withFocused (sendMessage . maximizeRestore))
                        -- mirror layout like spectrwm       
                        , ((mod1Mask .|. shiftMask, xK_backslash), sendMessage $ Toggle REFLECTX)
                        , ((mod1Mask, xK_backslash), sendMessage $ Toggle REFLECTY)
