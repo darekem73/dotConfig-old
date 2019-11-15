@@ -69,7 +69,7 @@ main = do
     , layoutHook = mkToggle (single REFLECTX) $
                    mkToggle (single REFLECTY) $
                    avoidStruts $ 
-                   maximize (tall ||| wide ||| dock ||| full ||| three ||| grid ||| acc ||| stack ||| autom ||| flt)
+                   tall ||| wide ||| dock ||| full ||| three ||| grid ||| acc ||| stack ||| autom ||| flt
     , handleEventHook = mconcat [
                           docksEventHook
                           , handleEventHook def
@@ -153,7 +153,7 @@ main = do
                        -- confirm quitting       
                        , ("M-S-q", dchoice ["-p","Exit?"] ["No","Yes","Shutdown"] [(spawn "")
                                                                                 , (io exitSuccess)
-                                                                                , (spawn "sudo -A shutdown now")])
+                                                                                , (spawn "sudo poweroff")])
                      ]
      where 
        helpCommand :: X ()
@@ -164,16 +164,16 @@ main = do
 	       current <- show <$> withWindowSet (pure . W.currentTag)
                return $ (if (read $ current) == W.tag ws then "*" else "") ++ "[" ++ W.tag ws ++ "] " ++ name
 
-tall   = renamed [Replace "tall"] $ spacing 3 $ ResizableTall 1 (3/100) (1/2) []
+tall   = renamed [Replace "tall"] $ maximize $ spacing 3 $ ResizableTall 1 (3/100) (1/2) []
 wide   = renamed [Replace "wide"] $ Mirror $ tall
-stack  = renamed [Replace "stack"] $ spacing 3 $ StackTile 1 (3/100) (1/2)
+stack  = renamed [Replace "stack"] $ maximize $ spacing 3 $ StackTile 1 (3/100) (1/2)
 full   = renamed [Replace "full"] $ noBorders $ Full
-acc    = renamed [Replace "accordion"] $ spacing 3 $ Accordion
-three  = renamed [Replace "three"] $ spacing 3 $ ThreeColMid 1 (3/100) (1/2)
-grid   = renamed [Replace "grid"] $ spacing 3 $ Grid
-dock   = renamed [Replace "dock"] $ spacing 3 $ TwoPane (3/100) (1/2)
-autom  = renamed [Replace "autom"] $ spacing 3 $ Mirror $ autoMaster 1 (1/100) Grid
-flt    = renamed [Replace "float"] $ simplestFloat 
+acc    = renamed [Replace "accordion"] $ maximize $ spacing 3 $ Accordion
+three  = renamed [Replace "three"] $ maximize $ spacing 3 $ ThreeColMid 1 (3/100) (1/2)
+grid   = renamed [Replace "grid"] $ maximize $ spacing 3 $ Grid
+dock   = renamed [Replace "dock"] $ maximize $ spacing 3 $ TwoPane (3/100) (1/2)
+autom  = renamed [Replace "autom"] $ maximize $ spacing 3 $ Mirror $ autoMaster 1 (1/100) Grid
+flt    = renamed [Replace "float"] $ maximize $ simplestFloat 
  
 help :: String
 help = unlines ["The default modifier key is 'alt'. Default keybindings:",
