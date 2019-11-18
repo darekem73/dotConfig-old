@@ -1388,11 +1388,11 @@ refresh-on-startup yes
 #
 # unbind-key R
 # unbind keys
-unbind-key ENTER
-unbind-key j
-unbind-key k
-unbind-key J
-unbind-key K
+# unbind-key ENTER
+# unbind-key j
+# unbind-key k
+# unbind-key J
+# unbind-key K
 
 ####  urls-source
 #
