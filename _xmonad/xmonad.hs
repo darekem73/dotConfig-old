@@ -5,6 +5,7 @@ import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.DynamicHooks
 import           XMonad.Hooks.ManageHelpers
 import           XMonad.Hooks.DynamicBars
+import           XMonad.Hooks.SetWMName
 import           XMonad.Layout.Accordion
 import           XMonad.Layout.Fullscreen
 import           XMonad.Layout.Grid
@@ -34,9 +35,12 @@ import           XMonad.Actions.WindowBringer
 import           XMonad.Actions.GridSelect
 import           XMonad.Actions.WithAll
 import           XMonad.Actions.FloatKeys
+import           XMonad.Actions.WorkspaceNames
+import qualified XMonad.Actions.SwapWorkspaces as SWS
 import qualified XMonad.StackSet as W
 import           System.IO
 import           System.Exit
+import           Data.Maybe
 import           Control.Monad
 
 dchoice :: [String] -> [String] -> [X()] -> X()
@@ -53,6 +57,10 @@ barCreator (X.S sid) = spawnPipe $ "/usr/bin/xmobar --screen " ++ show sid ++ " 
 
 barDestroyer :: DynamicStatusBarCleanup
 barDestroyer = return ()
+
+renameWS = do
+  setCurrentWorkspaceName "test"
+  -- renameWorkspace def
 
 main = do
   -- statusBar <- spawnPipe "/usr/bin/xmobar /home/darek/.xmonad/xmobarrc"
@@ -75,10 +83,16 @@ main = do
                           , handleEventHook def
                           , dynStatusBarEventHook barCreator barDestroyer 
                         ]
-    , logHook = multiPP (defaultPP
-                           { ppCurrent = xmobarColor "green" "" . pad
+    , workspaces = myWorkspaces
+    , logHook = multiPP (def
+                           { ppCurrent = xmobarColor "green" "" . wrap "[" "]"
+                           -- { ppCurrent = xmobarColor "green" "" . wrap "[" "]" . liftM (fromMaybe "") . getWorkspaceName
+                           -- { ppCurrent = xmobarColor "green" "" . wrap "[" "]" . liftM show . getWorkspaceName
+                           -- { ppCurrent = \tag -> getWorkspaceName tag >>= fromMaybe "" . liftX . xmobarColor "green" "" . wrap "[" "]"
+                           -- { ppCurrent = xmobarColor "green" "" . wrap "[" "]" . liftM show . getWorkspaceName
+                           , ppUrgent  = xmobarColor "red" "yellow"
                            , ppTitle = xmobarColor "green" "" . shorten 50
-			   }) (defaultPP)
+                           }) (def)
 --    , logHook = dynamicLogWithPP $ xmobarPP
 --                        { ppOutput = hPutStrLn statusBar
 --                        , ppTitle = xmobarColor "green" "" . shorten 50
@@ -92,7 +106,8 @@ main = do
           spawnOnce "synclient TapButton2=3 TapButton1=1"
           spawnOnce "xset r rate 200 40"
           dynStatusBarStartup barCreator barDestroyer
-  } `additionalKeys` [
+          setWMName "LG3D"
+  } `additionalKeys` ([
                          ((mod1Mask, xK_grave), scratchpadSpawnActionCustom "st -n scratchpad -e tmux")
                        , ((mod1Mask .|. controlMask, xK_l), spawn "screenlock")
                        , ((mod4Mask .|. shiftMask, xK_Return), spawn "st")
@@ -108,6 +123,7 @@ main = do
                        , ((mod1Mask, xK_a), sendMessage MirrorExpand)
                        , ((mod1Mask, xK_b), sendMessage $ ToggleStruts)
                        , ((mod1Mask, xK_m), withFocused (sendMessage . maximizeRestore))
+                       , ((mod1Mask .|. shiftMask, xK_r), renameWS)
                        -- mirror layout like spectrwm       
                        , ((mod1Mask .|. shiftMask, xK_backslash), sendMessage $ Toggle REFLECTX)
                        , ((mod1Mask, xK_backslash), sendMessage $ Toggle REFLECTY)
@@ -132,7 +148,11 @@ main = do
                        , ((mod1Mask .|. shiftMask, xK_slash), helpCommand) -- %! Run xmessage with a summary of the default keybindings (useful for beginners)
                        -- repeat the binding for non-American layout keyboards
                        , ((mod1Mask, xK_question), helpCommand) -- %! Run xmessage with a summary of the default keybindings (useful for beginners)
-                     ]
+                     ] 
+                     ++ [
+                         --((mod1Mask .|. controlMask, k), windows $ SWS.swapWithCurrent i) | (i, k) <- zip myWorkspaces [xK_1 ..]
+                         ((mod1Mask .|. controlMask, k), swapWithCurrent i) | (i, k) <- zip myWorkspaces [xK_1 ..]
+                     ])
    `additionalKeysP` [
                        -- Move the focused window
                          ("M-<U>", withFocused (keysMoveWindow (0, -15)))
@@ -161,8 +181,11 @@ main = do
        decorateName :: X.WindowSpace -> Window -> X String
        decorateName ws w = do
                name <- show <$> getName w
-	       current <- show <$> withWindowSet (pure . W.currentTag)
-               return $ (if (read $ current) == W.tag ws then "*" else "") ++ "[" ++ W.tag ws ++ "] " ++ name
+	       -- current <- show <$> withWindowSet (pure . W.currentTag)
+	       -- current <- withWindowSet (pure . W.currentTag)
+               current <- gets (W.currentTag . windowset)
+               -- return $ (if (read $ current) == W.tag ws then "*" else "") ++ "[" ++ W.tag ws ++ "] " ++ name
+               return $ (if current == W.tag ws then "*" else "") ++ "[" ++ W.tag ws ++ "] " ++ name
 
 tall   = renamed [Replace "tall"] $ maximize $ spacing 3 $ ResizableTall 1 (3/100) (1/2) []
 wide   = renamed [Replace "wide"] $ Mirror $ tall
@@ -174,7 +197,10 @@ grid   = renamed [Replace "grid"] $ maximize $ spacing 3 $ Grid
 dock   = renamed [Replace "dock"] $ maximize $ spacing 3 $ TwoPane (3/100) (1/2)
 autom  = renamed [Replace "autom"] $ maximize $ spacing 3 $ Mirror $ autoMaster 1 (1/100) Grid
 flt    = renamed [Replace "float"] $ maximize $ simplestFloat 
- 
+
+myWorkspaces :: [WorkspaceId]
+myWorkspaces = map show $ [1..9]
+
 help :: String
 help = unlines ["The default modifier key is 'alt'. Default keybindings:",
     "",
