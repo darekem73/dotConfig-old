@@ -84,12 +84,13 @@ main = do
                           , dynStatusBarEventHook barCreator barDestroyer 
                         ]
     , workspaces = myWorkspaces
-    , logHook = multiPP (def
-                           { ppCurrent = xmobarColor "green" "" . wrap "[" "]"
-                           -- { ppCurrent = xmobarColor "green" "" . wrap "[" "]" . liftM (fromMaybe "") . getWorkspaceName
-                           -- { ppCurrent = xmobarColor "green" "" . wrap "[" "]" . liftM show . getWorkspaceName
-                           -- { ppCurrent = \tag -> getWorkspaceName tag >>= fromMaybe "" . liftX . xmobarColor "green" "" . wrap "[" "]"
-                           -- { ppCurrent = xmobarColor "green" "" . wrap "[" "]" . liftM show . getWorkspaceName
+    , logHook = multiPPFormat dynamicLogString (def {
+                           ppCurrent = xmobarColor "green" "" . wrap "[" "]"
+                           -- , ppVisible = pad
+                           -- ppCurrent = xmobarColor "green" "" . wrap "[" "]" . liftM (fromMaybe "") . getWorkspaceName
+                           -- ppCurrent = xmobarColor "green" "" . wrap "[" "]" . liftM show . getWorkspaceName
+                           -- ppCurrent = \tag -> getWorkspaceName tag >>= fromMaybe "" . liftX . xmobarColor "green" "" . wrap "[" "]"
+                           -- ppCurrent = xmobarColor "green" "" . wrap "[" "]" . liftM show . getWorkspaceName
                            , ppUrgent  = xmobarColor "red" "yellow"
                            , ppTitle = xmobarColor "green" "" . shorten 50
                            }) (def)
@@ -104,6 +105,7 @@ main = do
           spawnOnce "setxkbmap -option caps:escape"
           spawnOnce "xautolock -time 10 -locker screenlock"
           spawnOnce "synclient TapButton2=3 TapButton1=1"
+	  spawnOnce "synclient RightButtonAreaLeft=0 RightButtonAreaTop=0"
           spawnOnce "xset r rate 200 40"
           dynStatusBarStartup barCreator barDestroyer
           setWMName "LG3D"
