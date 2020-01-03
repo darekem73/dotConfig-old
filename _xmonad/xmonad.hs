@@ -103,7 +103,8 @@ main = do
           spawnOnce "compton &"
           spawnOnce "conky -d -c /home/darek/.conkyrc-stat"
           spawnOnce "setxkbmap -option caps:escape"
-          spawnOnce "xautolock -time 10 -locker screenlock"
+          --spawnOnce "xautolock -time 10 -locker screenlock"
+          spawnOnce "xautolock -time 10 -locker slock"
           spawnOnce "synclient TapButton2=3 TapButton1=1"
 	  spawnOnce "synclient RightButtonAreaLeft=0 RightButtonAreaTop=0"
           spawnOnce "xset r rate 200 40"
@@ -111,7 +112,7 @@ main = do
           setWMName "LG3D"
   } `additionalKeys` ([
                          ((mod1Mask, xK_grave), scratchpadSpawnActionCustom "st -n scratchpad -e tmux")
-                       , ((mod1Mask .|. controlMask, xK_l), spawn "screenlock")
+                       , ((mod1Mask .|. controlMask, xK_l), spawn "slock")
                        , ((mod4Mask .|. shiftMask, xK_Return), spawn "st")
                        , ((mod4Mask, xK_Return), spawn "st")
                        , ((mod1Mask, xK_n), sendMessage (JumpToLayout "accordion"))
