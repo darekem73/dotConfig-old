@@ -8,4 +8,4 @@ alias me='monitor extend'
 alias mc='monitor same'
 alias ton='touchpadctl on'
 alias toff='touchpadctl off'
-
+alias rh='$(history | sort -rn | fzy | cut -b8-)'
