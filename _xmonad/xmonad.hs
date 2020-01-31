@@ -137,7 +137,11 @@ main = do
                        , ((mod1Mask .|. shiftMask, xK_bracketleft), sendMessage $ IncMasterN 1)
                        , ((mod1Mask .|. shiftMask, xK_bracketright), sendMessage $ IncMasterN (-1))
                        , ((mod1Mask, xK_0), gotoMenuConfig WindowBringerConfig { menuCommand = "dmenu"
-                                                                  , XMonad.Actions.WindowBringer.menuArgs = ["-i","-l","10"]
+                                                                  , XMonad.Actions.WindowBringer.menuArgs = ["-p","Goto","-i","-l","10"]
+                                                                  , windowTitler = decorateName
+                                                                  })
+                       , ((mod1Mask .|. shiftMask, xK_0), bringMenuConfig WindowBringerConfig { menuCommand = "dmenu"
+                                                                  , XMonad.Actions.WindowBringer.menuArgs = ["-p","Bring","-i","-l","10"]
                                                                   , windowTitler = decorateName
                                                                   })
                        , ((mod1Mask, xK_p), spawn "dmenu_run -i") -- %! Launch dmenu
