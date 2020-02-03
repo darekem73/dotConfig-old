@@ -36,6 +36,7 @@ import           XMonad.Actions.GridSelect
 import           XMonad.Actions.WithAll
 import           XMonad.Actions.FloatKeys
 import           XMonad.Actions.WorkspaceNames
+import           XMonad.Actions.RotSlaves
 import qualified XMonad.Actions.SwapWorkspaces as SWS
 import qualified XMonad.StackSet as W
 import           System.IO
@@ -106,7 +107,7 @@ main = do
           --spawnOnce "xautolock -time 10 -locker screenlock"
           spawnOnce "xautolock -time 10 -locker slock"
           spawnOnce "synclient TapButton2=3 TapButton1=1"
-	  spawnOnce "synclient RightButtonAreaLeft=0 RightButtonAreaTop=0"
+          spawnOnce "synclient RightButtonAreaLeft=0 RightButtonAreaTop=0"
           spawnOnce "xset r rate 200 40"
           dynStatusBarStartup barCreator barDestroyer
           setWMName "LG3D"
@@ -134,8 +135,14 @@ main = do
                        , ((mod1Mask .|. shiftMask, xK_f), withFocused float)
                        -- unfloat all windows
                        , ((mod1Mask .|. shiftMask, xK_t), sinkAll)
+                       -- inc/dec number of windows in master
                        , ((mod1Mask .|. shiftMask, xK_bracketleft), sendMessage $ IncMasterN 1)
                        , ((mod1Mask .|. shiftMask, xK_bracketright), sendMessage $ IncMasterN (-1))
+                       -- rotate slave stack
+                       , ((mod1Mask .|. shiftMask, xK_comma), rotSlavesDown)
+                       , ((mod1Mask .|. shiftMask, xK_period), rotSlavesDown)
+                       , ((mod1Mask, xK_comma), rotSlavesUp)
+                       , ((mod1Mask, xK_period), rotSlavesUp)
                        , ((mod1Mask, xK_0), gotoMenuConfig WindowBringerConfig { menuCommand = "dmenu"
                                                                   , XMonad.Actions.WindowBringer.menuArgs = ["-p","Goto","-i","-l","10"]
                                                                   , windowTitler = decorateName
